@@ -1,0 +1,38 @@
+aid: centers-for-disease-control-and-prevention
+name: Centers for Disease Control and Prevention
+description: >-
+  Centers for Disease Control and Prevention. CDC twenty four seven. Saving
+  Lives, Protecting People Centers for Disease Control and Prevention. CDC
+  twenty four seven. ... Interface (API) is an additional way to query data
+  stored by the Environmental Public Health Tracking Network. The API provides a
+  standard URL interface with a JSON formatted ...
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - API
+created: '2024-12-03'
+modified: '2024-12-03'
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/centers-for-disease-control-and-prevention/refs/heads/main/apis.yml
+specificationVersion: '0.19'
+apis:
+  - aid: >-
+      centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention
+    name: Centers for Disease Control and Prevention
+    description: >-
+      Centers for Disease Control and Prevention. CDC twenty four seven. Saving
+      Lives, Protecting People Centers for Disease Control and Prevention. CDC
+      twenty four seven. ... Interface (API) is an additional way to query data
+      stored by the Environmental Public Health Tracking Network. The API
+      provides a standard URL interface with a JSON formatted ...
+    humanURL: https://open.cdc.gov/apis.html
+    tags:
+      - API
+    properties:
+      - type: Documentation
+        url: https://open.cdc.gov/apis.html
+maintainers:
+  - FN: Kin Lane
+    email: info@apievangelist.com
