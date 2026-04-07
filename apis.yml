@@ -3,10 +3,10 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/centers-for-disease-control-and-prevention/refs/heads/main/apis.yml
 name: Centers for Disease Control and Prevention
 tags:
-  - Federal Government
   - Diseases
-  - Public Health
+  - Federal Government
   - Healthcare
+  - Public Health
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
