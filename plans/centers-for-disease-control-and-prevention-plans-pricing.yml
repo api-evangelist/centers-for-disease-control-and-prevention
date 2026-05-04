@@ -1,0 +1,194 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Centers for Disease Control and Prevention
+providerId: centers-for-disease-control-and-prevention
+created: '2026-05-04'
+modified: '2026-05-04'
+tags:
+  - CDC
+  - Environmental Health
+  - Epidemiology
+  - Federal Government
+  - Healthcare
+  - Open Data
+  - Public Health
+  - Socrata
+  - Surveillance
+  - WONDER
+description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
+  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+plans:
+  - id: centers-for-disease-control-and-prevention-free
+    name: Free
+    type: freemium
+    description: Free entry tier for the Centers for Disease Control and Prevention API surface. Intended
+      for evaluation, prototyping, and low-volume integrations. Real limits and pricing must be reconciled
+      with the provider's published plan documentation.
+    entries:
+      - label: API Requests
+        description: Monthly API request quota across all included endpoints
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 1000
+        timeFrame: month
+        geo: global
+        domains:
+          - https://data.cdc.gov/resource/
+          - https://wonder.cdc.gov/controller/datarequest/
+          - https://chronicdata.cdc.gov/resource/
+          - https://ephtracking.cdc.gov:443/apigateway/api/v1
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Rate Limit
+        description: Maximum requests per minute on the free tier
+        name: rate_limit
+        type: rate
+        metric: requests_per_minute
+        limit: 10
+        timeFrame: minute
+        geo: global
+        domains:
+          - https://data.cdc.gov/resource/
+          - https://wonder.cdc.gov/controller/datarequest/
+          - https://chronicdata.cdc.gov/resource/
+          - https://ephtracking.cdc.gov:443/apigateway/api/v1
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+    elements:
+      - name: Public Documentation
+      - name: Community Support
+      - name: Sandbox Access
+      - name: CDC Socrata Open Data API (data.cdc.gov)
+      - name: CDC WONDER API
+      - name: CDC PLACES / 500 Cities API
+      - name: CDC Environmental Public Health Tracking Network API
+      - name: CDC Public Health Media Library (Content Syndication)
+      - name: CDC Open Technology API Index
+      - name: CDC NNDSS / MMWR Socrata Data
+  - id: centers-for-disease-control-and-prevention-pro
+    name: Professional
+    type: paid
+    description: Production tier for Centers for Disease Control and Prevention. Provides higher quotas,
+      priority support, and access to the broader API portfolio. Pricing placeholder; align with the provider's
+      pricing page.
+    entries:
+      - label: API Requests
+        description: Monthly API request quota
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: 100000
+        timeFrame: month
+        geo: global
+        domains:
+          - https://data.cdc.gov/resource/
+          - https://wonder.cdc.gov/controller/datarequest/
+          - https://chronicdata.cdc.gov/resource/
+          - https://ephtracking.cdc.gov:443/apigateway/api/v1
+        unit: 1
+        price: TBD
+        userMultiplied: false
+      - label: Rate Limit
+        description: Maximum requests per minute on the professional tier
+        name: rate_limit
+        type: rate
+        metric: requests_per_minute
+        limit: 100
+        timeFrame: minute
+        geo: global
+        domains:
+          - https://data.cdc.gov/resource/
+          - https://wonder.cdc.gov/controller/datarequest/
+          - https://chronicdata.cdc.gov/resource/
+          - https://ephtracking.cdc.gov:443/apigateway/api/v1
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Overage
+        description: Per-request price after monthly quota is exceeded
+        name: overage
+        type: metered
+        metric: requests
+        limit: -1
+        timeFrame: month
+        geo: global
+        domains:
+          - https://data.cdc.gov/resource/
+          - https://wonder.cdc.gov/controller/datarequest/
+          - https://chronicdata.cdc.gov/resource/
+          - https://ephtracking.cdc.gov:443/apigateway/api/v1
+        unit: 1000
+        price: TBD
+        userMultiplied: false
+    elements:
+      - name: All Production Endpoints
+      - name: Email Support
+      - name: SLA Targets
+      - name: Webhook Subscriptions
+      - name: CDC Socrata Open Data API (data.cdc.gov)
+      - name: CDC WONDER API
+      - name: CDC PLACES / 500 Cities API
+      - name: CDC Environmental Public Health Tracking Network API
+      - name: CDC Public Health Media Library (Content Syndication)
+      - name: CDC Open Technology API Index
+      - name: CDC NNDSS / MMWR Socrata Data
+  - id: centers-for-disease-control-and-prevention-enterprise
+    name: Enterprise
+    type: enterprise
+    description: Custom-negotiated tier for Centers for Disease Control and Prevention. Includes dedicated
+      capacity, contractual SLAs, security review, data residency options, and named technical account
+      management.
+    entries:
+      - label: API Requests
+        description: Negotiated request volume; -1 indicates uncapped subject to fair use
+        name: api_requests
+        type: quota
+        metric: requests
+        limit: -1
+        timeFrame: month
+        geo: configurable
+        domains:
+          - https://data.cdc.gov/resource/
+          - https://wonder.cdc.gov/controller/datarequest/
+          - https://chronicdata.cdc.gov/resource/
+          - https://ephtracking.cdc.gov:443/apigateway/api/v1
+        unit: 1
+        price: custom
+        userMultiplied: false
+      - label: Rate Limit
+        description: Negotiated burst and steady-state rate
+        name: rate_limit
+        type: rate
+        metric: requests_per_minute
+        limit: 1000
+        timeFrame: minute
+        geo: configurable
+        domains:
+          - https://data.cdc.gov/resource/
+          - https://wonder.cdc.gov/controller/datarequest/
+          - https://chronicdata.cdc.gov/resource/
+          - https://ephtracking.cdc.gov:443/apigateway/api/v1
+        unit: 1
+        price: custom
+        userMultiplied: false
+    elements:
+      - name: Unlimited / Negotiated Volume
+      - name: 24/7 Dedicated Support
+      - name: Contractual SLA
+      - name: Security & Compliance Review
+      - name: Dedicated Account Manager
+      - name: Custom Data Residency
+      - name: CDC Socrata Open Data API (data.cdc.gov)
+      - name: CDC WONDER API
+      - name: CDC PLACES / 500 Cities API
+      - name: CDC Environmental Public Health Tracking Network API
+      - name: CDC Public Health Media Library (Content Syndication)
+      - name: CDC Open Technology API Index
+      - name: CDC NNDSS / MMWR Socrata Data
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
