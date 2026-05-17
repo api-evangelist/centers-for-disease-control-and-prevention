@@ -214,7 +214,7 @@ common:
     url: https://tools.cdc.gov/medialibrary/
   - type: EPHTN
     url: https://ephtracking.cdc.gov/
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.cdc.gov/other/privacy.html
   - type: Integrations
     url: https://www.cdc.gov/partners/about/index.html
