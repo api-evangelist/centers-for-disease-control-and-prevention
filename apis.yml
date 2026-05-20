@@ -196,6 +196,8 @@ apis:
       case counts for notifiable conditions accessible via SoQL and bulk
       download.
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/centers-for-disease-control-and-prevention
   - type: Website
     url: https://www.cdc.gov/
   - type: OpenData
