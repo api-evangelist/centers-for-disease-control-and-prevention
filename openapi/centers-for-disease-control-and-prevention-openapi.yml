@@ -1,0 +1,294 @@
+openapi: 3.1.0
+info:
+  title: CDC Socrata Open Data API (data.cdc.gov)
+  description: |
+    REST/JSON access to hundreds of CDC datasets published on data.cdc.gov via
+    the Socrata SODA (Socrata Open Data API) platform. Each dataset is
+    addressed by an eight-character dataset identifier and supports filtering,
+    aggregation, and pagination through SoQL query parameters. Anonymous use
+    is allowed at throttled rates; an application token (passed via the
+    X-App-Token header or $$app_token query parameter) raises limits. SODA v3
+    additionally supports authenticated user requests for non-public datasets.
+    Generated as a best-effort spec from public Socrata documentation; verify
+    against https://dev.socrata.com/docs/endpoints.html before production use.
+  version: "2.1"
+  contact:
+    name: CDC Open Data
+    url: https://data.cdc.gov/
+  license:
+    name: CC0 Public Domain (most CDC datasets)
+    url: https://creativecommons.org/publicdomain/zero/1.0/
+servers:
+  - url: https://data.cdc.gov
+    description: CDC Open Data portal (Socrata SODA).
+  - url: https://chronicdata.cdc.gov
+    description: CDC Chronic Data portal (PLACES, BRFSS, 500 Cities).
+security:
+  - appToken: []
+  - {}
+tags:
+  - name: SODA v2.1
+    description: Stable Socrata Open Data API used for the majority of data.cdc.gov queries.
+  - name: SODA v3
+    description: Next-generation query and export endpoints.
+paths:
+  /resource/{dataset_id}.json:
+    get:
+      tags: [SODA v2.1]
+      summary: Query a dataset (JSON)
+      description: |
+        Returns rows from a dataset as JSON. Supports SoQL via $select,
+        $where, $order, $group, $limit, $offset, and $q parameters.
+      operationId: queryDatasetJson
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Where'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Group'
+        - $ref: '#/components/parameters/Having'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/FullTextSearch'
+        - $ref: '#/components/parameters/Query'
+        - $ref: '#/components/parameters/AppTokenQuery'
+      responses:
+        '200':
+          description: Array of dataset rows.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '403':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+  /resource/{dataset_id}.csv:
+    get:
+      tags: [SODA v2.1]
+      summary: Query a dataset (CSV)
+      operationId: queryDatasetCsv
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/Select'
+        - $ref: '#/components/parameters/Where'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Group'
+        - $ref: '#/components/parameters/Having'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Query'
+        - $ref: '#/components/parameters/AppTokenQuery'
+      responses:
+        '200':
+          description: CSV result set.
+          content:
+            text/csv:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+  /resource/{dataset_id}.geojson:
+    get:
+      tags: [SODA v2.1]
+      summary: Query a dataset (GeoJSON)
+      operationId: queryDatasetGeoJson
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/Where'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/Offset'
+        - $ref: '#/components/parameters/Query'
+        - $ref: '#/components/parameters/AppTokenQuery'
+      responses:
+        '200':
+          description: GeoJSON FeatureCollection.
+          content:
+            application/vnd.geo+json:
+              schema:
+                type: object
+        '400':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+  /api/v3/views/{dataset_id}/query.json:
+    get:
+      tags: [SODA v3]
+      summary: Query a dataset (SODA v3, GET)
+      description: Query endpoint with v3 options and machine-readable response.
+      operationId: queryDatasetV3Get
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/Query'
+        - $ref: '#/components/parameters/AppTokenQuery'
+      responses:
+        '200':
+          description: Query result rows.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+    post:
+      tags: [SODA v3]
+      summary: Query a dataset (SODA v3, POST)
+      description: Preferred method for longer queries. Body is SoQL/$query payload.
+      operationId: queryDatasetV3Post
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+        - $ref: '#/components/parameters/AppTokenQuery'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query: { type: string, description: SoQL query. }
+                includeSynthetic: { type: boolean }
+        description: SoQL query payload.
+      responses:
+        '200':
+          description: Query result rows.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+  /api/v3/views/{dataset_id}/export.{format}:
+    get:
+      tags: [SODA v3]
+      summary: Export a dataset (human-readable)
+      operationId: exportDatasetV3
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+        - in: path
+          name: format
+          required: true
+          schema:
+            type: string
+            enum: [json, csv, geojson, xml]
+        - $ref: '#/components/parameters/AppTokenQuery'
+      responses:
+        '200':
+          description: Exported dataset.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { type: object }
+            text/csv:
+              schema: { type: string }
+            application/vnd.geo+json:
+              schema: { type: object }
+        '404':
+          $ref: '#/components/responses/Error'
+components:
+  securitySchemes:
+    appToken:
+      type: apiKey
+      in: header
+      name: X-App-Token
+      description: |
+        Socrata application token. Anonymous use is allowed at throttled rates;
+        an app token raises rate limits. May also be supplied as the
+        $$app_token query parameter.
+  parameters:
+    DatasetId:
+      in: path
+      name: dataset_id
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-z0-9]{4}-[a-z0-9]{4}$'
+        example: vbim-akqf
+      description: Eight-character dataset identifier (four-four with a dash).
+    Select:
+      in: query
+      name: $select
+      schema: { type: string }
+      description: Columns to return (SoQL SELECT clause).
+    Where:
+      in: query
+      name: $where
+      schema: { type: string }
+      description: Row filter (SoQL WHERE clause).
+    Order:
+      in: query
+      name: $order
+      schema: { type: string }
+      description: Ordering (SoQL ORDER BY clause).
+    Group:
+      in: query
+      name: $group
+      schema: { type: string }
+      description: Grouping (SoQL GROUP BY clause).
+    Having:
+      in: query
+      name: $having
+      schema: { type: string }
+      description: Post-grouping filter (SoQL HAVING clause).
+    Limit:
+      in: query
+      name: $limit
+      schema:
+        type: integer
+        default: 1000
+        maximum: 50000
+      description: Maximum rows to return.
+    Offset:
+      in: query
+      name: $offset
+      schema:
+        type: integer
+        default: 0
+      description: Row offset for pagination.
+    FullTextSearch:
+      in: query
+      name: $q
+      schema: { type: string }
+      description: Full-text search across the dataset.
+    Query:
+      in: query
+      name: $query
+      schema: { type: string }
+      description: Full SoQL query, overriding individual $select/$where/etc.
+    AppTokenQuery:
+      in: query
+      name: $$app_token
+      schema: { type: string }
+      description: Socrata application token (alternative to X-App-Token header).
+  responses:
+    Error:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code: { type: string }
+              error: { type: boolean }
+              message: { type: string }
+              data:
+                type: object
