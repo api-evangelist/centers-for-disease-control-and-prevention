@@ -1,0 +1,10 @@
+---
+title: 'Dataset Created: Development of an air sampling method for quantifying 12
+  legacy and emerging PFAS with the OSHA Versatile Sampler (OVS) tube and analysis
+  by HPLC-MS/MS'
+url: https://data.cdc.gov/National-Institute-for-Occupational-Safety-and-Hea/Development-of-an-air-sampling-method-for-quantify/ipqz-2s6g
+date: '2026-05-19'
+author: fxc7@cdc.gov
+feed_url: https://data.cdc.gov/catalog.rss
+---
+Per- and polyfluoroalkyl substances (PFAS), recognized for their advantageous physical and chemical properties, are extensively utilized in various industrial applications. However, PFAS exposures have been associated with a range of adverse health effects, including developmental issues, immune system suppression, and hormonal disruptions. The International Agency for Research on Cancer (IARC) has classified perfluorooctanoic acid (PFOA) as carcinogenic to humans and perfluorooctane sulfonate (PFOS) as possibly carcinogenic due to evidence of tumor development in animal studies. Despite these health concerns, occupational environments frequently expose workers to PFAS through inhalation, dermal contact, or ingestion based on the substance state and application. Air monitoring has detected significant levels of PFAS in diverse workplace settings; however, the absence of standardized protocols for airborne PFAS presents challenges in understanding and controlling exposure risks. The Occupational Safety and Health Administration (OSHA) Versatile Sampler (OVS) tube has demonstrated efficacy in capturing and analyzing airborne PFOA. Our objective was to adapt this method for broader PFAS detection, employing a novel air generation technique to simulate environmental capture conditions. For the first time, we established a robust scientific approach for air sampling of a group of 12 PFAS from different classes, which will aid in assessing potentially harmful airborne PFAS levels. Method validation tests followed the National Institute for Occupational Safety and Health (NIOSH) Manual of Analytical Methods (NMAM) evaluation criterion.
