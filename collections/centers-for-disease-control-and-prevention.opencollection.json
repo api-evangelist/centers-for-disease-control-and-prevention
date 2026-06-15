@@ -1,0 +1,325 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "CDC Socrata Open Data API (data.cdc.gov)",
+    "version": "2.1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-App-Token",
+      "value": "{{X-App-Token}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SODA v2.1",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query a dataset (JSON)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.cdc.gov/resource/:dataset_id.json",
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path",
+                "description": "Eight-character dataset identifier (four-four with a dash)."
+              },
+              {
+                "name": "$select",
+                "value": "",
+                "type": "query",
+                "description": "Columns to return (SoQL SELECT clause)."
+              },
+              {
+                "name": "$where",
+                "value": "",
+                "type": "query",
+                "description": "Row filter (SoQL WHERE clause)."
+              },
+              {
+                "name": "$order",
+                "value": "",
+                "type": "query",
+                "description": "Ordering (SoQL ORDER BY clause)."
+              },
+              {
+                "name": "$group",
+                "value": "",
+                "type": "query",
+                "description": "Grouping (SoQL GROUP BY clause)."
+              },
+              {
+                "name": "$having",
+                "value": "",
+                "type": "query",
+                "description": "Post-grouping filter (SoQL HAVING clause)."
+              },
+              {
+                "name": "$limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum rows to return."
+              },
+              {
+                "name": "$offset",
+                "value": "",
+                "type": "query",
+                "description": "Row offset for pagination."
+              },
+              {
+                "name": "$q",
+                "value": "",
+                "type": "query",
+                "description": "Full-text search across the dataset."
+              },
+              {
+                "name": "$query",
+                "value": "",
+                "type": "query",
+                "description": "Full SoQL query, overriding individual $select/$where/etc."
+              },
+              {
+                "name": "$$app_token",
+                "value": "",
+                "type": "query",
+                "description": "Socrata application token (alternative to X-App-Token header)."
+              }
+            ]
+          },
+          "docs": "Returns rows from a dataset as JSON. Supports SoQL via $select,\n$where, $order, $group, $limit, $offset, and $q parameters.\n"
+        },
+        {
+          "info": {
+            "name": "Query a dataset (CSV)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.cdc.gov/resource/:dataset_id.csv",
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path",
+                "description": "Eight-character dataset identifier (four-four with a dash)."
+              },
+              {
+                "name": "$select",
+                "value": "",
+                "type": "query",
+                "description": "Columns to return (SoQL SELECT clause)."
+              },
+              {
+                "name": "$where",
+                "value": "",
+                "type": "query",
+                "description": "Row filter (SoQL WHERE clause)."
+              },
+              {
+                "name": "$order",
+                "value": "",
+                "type": "query",
+                "description": "Ordering (SoQL ORDER BY clause)."
+              },
+              {
+                "name": "$group",
+                "value": "",
+                "type": "query",
+                "description": "Grouping (SoQL GROUP BY clause)."
+              },
+              {
+                "name": "$having",
+                "value": "",
+                "type": "query",
+                "description": "Post-grouping filter (SoQL HAVING clause)."
+              },
+              {
+                "name": "$limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum rows to return."
+              },
+              {
+                "name": "$offset",
+                "value": "",
+                "type": "query",
+                "description": "Row offset for pagination."
+              },
+              {
+                "name": "$query",
+                "value": "",
+                "type": "query",
+                "description": "Full SoQL query, overriding individual $select/$where/etc."
+              },
+              {
+                "name": "$$app_token",
+                "value": "",
+                "type": "query",
+                "description": "Socrata application token (alternative to X-App-Token header)."
+              }
+            ]
+          },
+          "docs": "Query a dataset (CSV)"
+        },
+        {
+          "info": {
+            "name": "Query a dataset (GeoJSON)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.cdc.gov/resource/:dataset_id.geojson",
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path",
+                "description": "Eight-character dataset identifier (four-four with a dash)."
+              },
+              {
+                "name": "$where",
+                "value": "",
+                "type": "query",
+                "description": "Row filter (SoQL WHERE clause)."
+              },
+              {
+                "name": "$limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum rows to return."
+              },
+              {
+                "name": "$offset",
+                "value": "",
+                "type": "query",
+                "description": "Row offset for pagination."
+              },
+              {
+                "name": "$query",
+                "value": "",
+                "type": "query",
+                "description": "Full SoQL query, overriding individual $select/$where/etc."
+              },
+              {
+                "name": "$$app_token",
+                "value": "",
+                "type": "query",
+                "description": "Socrata application token (alternative to X-App-Token header)."
+              }
+            ]
+          },
+          "docs": "Query a dataset (GeoJSON)"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SODA v3",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query a dataset (SODA v3, GET)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.cdc.gov/api/v3/views/:dataset_id/query.json",
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path",
+                "description": "Eight-character dataset identifier (four-four with a dash)."
+              },
+              {
+                "name": "$query",
+                "value": "",
+                "type": "query",
+                "description": "Full SoQL query, overriding individual $select/$where/etc."
+              },
+              {
+                "name": "$$app_token",
+                "value": "",
+                "type": "query",
+                "description": "Socrata application token (alternative to X-App-Token header)."
+              }
+            ]
+          },
+          "docs": "Query endpoint with v3 options and machine-readable response."
+        },
+        {
+          "info": {
+            "name": "Query a dataset (SODA v3, POST)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://data.cdc.gov/api/v3/views/:dataset_id/query.json",
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path",
+                "description": "Eight-character dataset identifier (four-four with a dash)."
+              },
+              {
+                "name": "$$app_token",
+                "value": "",
+                "type": "query",
+                "description": "Socrata application token (alternative to X-App-Token header)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Preferred method for longer queries. Body is SoQL/$query payload."
+        },
+        {
+          "info": {
+            "name": "Export a dataset (human-readable)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://data.cdc.gov/api/v3/views/:dataset_id/export.:format",
+            "params": [
+              {
+                "name": "dataset_id",
+                "value": "",
+                "type": "path",
+                "description": "Eight-character dataset identifier (four-four with a dash)."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "$$app_token",
+                "value": "",
+                "type": "query",
+                "description": "Socrata application token (alternative to X-App-Token header)."
+              }
+            ]
+          },
+          "docs": "Export a dataset (human-readable)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
