@@ -54,7 +54,7 @@ apis:
       - url: https://dev.socrata.com/consumers/getting-started.html
         type: GettingStarted
       - url: https://evergreen.data.socrata.com/signup
-        type: SignUp
+        type: Signup
     description: >-
       The CDC Socrata Open Data API (SODA) provides programmatic JSON, CSV,
       and GeoJSON access to hundreds of data.cdc.gov datasets covering
