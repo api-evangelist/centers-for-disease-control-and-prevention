@@ -196,6 +196,10 @@ apis:
       case counts for notifiable conditions accessible via SoQL and bulk
       download.
 common:
+  - type: DomainSecurity
+    url: security/centers-for-disease-control-and-prevention-domain-security.yml
+  - type: Authentication
+    url: authentication/centers-for-disease-control-and-prevention-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/centers-for-disease-control-and-prevention
   - type: Website
