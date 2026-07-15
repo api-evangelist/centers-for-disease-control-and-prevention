@@ -196,6 +196,8 @@ apis:
       case counts for notifiable conditions accessible via SoQL and bulk
       download.
 common:
+  - type: AgenticAccess
+    url: agentic-access/centers-for-disease-control-and-prevention-agentic-access.yml
   - type: DomainSecurity
     url: security/centers-for-disease-control-and-prevention-domain-security.yml
   - type: Authentication

@@ -1,0 +1,82 @@
+generated: '2026-07-15'
+method: generated
+source: openapi/centers-for-disease-control-and-prevention-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 6
+  by_action_class:
+    connected: 5
+    acting: 1
+  by_consequence:
+    read: 5
+    write: 1
+  human_in_the_loop_required: 0
+operations:
+- path: /resource/{dataset_id}.json
+  method: get
+  operationId: queryDatasetJson
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /resource/{dataset_id}.csv
+  method: get
+  operationId: queryDatasetCsv
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /resource/{dataset_id}.geojson
+  method: get
+  operationId: queryDatasetGeoJson
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v3/views/{dataset_id}/query.json
+  method: get
+  operationId: queryDatasetV3Get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /api/v3/views/{dataset_id}/query.json
+  method: post
+  operationId: queryDatasetV3Post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /api/v3/views/{dataset_id}/export.{format}
+  method: get
+  operationId: exportDatasetV3
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
