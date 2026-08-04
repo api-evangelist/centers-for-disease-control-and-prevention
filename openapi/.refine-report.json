@@ -1,0 +1,16 @@
+{
+  "provider": "centers-for-disease-control-and-prevention",
+  "sources": [
+    "centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml"
+  ],
+  "outputs": [
+    "centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
