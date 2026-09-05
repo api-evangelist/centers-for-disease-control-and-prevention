@@ -1,0 +1,130 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  npm registry metadata (registry.npmjs.org) for the @cdc and @us-gov-cdc scopes, plus the
+  GitHub Container Registry build published by CDCgov/dibbs-ecr-refiner. Scope ownership was
+  confirmed by each package's repository field resolving to a github.com/CDCgov repo.
+note: >-
+  CDC publishes no first-party client SDK for its public data APIs (SODA / data.cdc.gov,
+  CDC WONDER, the Environmental Public Health Tracking API, or the Content Syndication API).
+  Third-party clients exist (for example the community `sodapy` package on PyPI, maintained by
+  xmunoz, and `EPHTrackR`, an R interface published in CDCgov/EPHTrackR but never released to
+  CRAN — crandb.r-pkg.org/EPHTrackR returned 404 on 2026-09-05). What CDC does publish to public
+  registries is a front-end visualization component library and a containerized product build,
+  both catalogued below.
+packages:
+  - language: javascript
+    registry: npm
+    name: "@cdc/core"
+    url: https://www.npmjs.com/package/@cdc/core
+    install: npm install @cdc/core
+    official: true
+    version: 4.26.7
+    published: '2026-07-28'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/cdc-open-viz
+    description: Core components, styles, hooks and helpers for the CDC Open Visualization library.
+  - language: javascript
+    registry: npm
+    name: "@cdc/chart"
+    url: https://www.npmjs.com/package/@cdc/chart
+    install: npm install @cdc/chart
+    official: true
+    version: 4.26.7
+    published: '2026-07-28'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/cdc-open-viz
+  - language: javascript
+    registry: npm
+    name: "@cdc/map"
+    url: https://www.npmjs.com/package/@cdc/map
+    install: npm install @cdc/map
+    official: true
+    version: 4.26.7
+    published: '2026-07-28'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/cdc-open-viz
+  - language: javascript
+    registry: npm
+    name: "@cdc/dashboard"
+    url: https://www.npmjs.com/package/@cdc/dashboard
+    install: npm install @cdc/dashboard
+    official: true
+    version: 4.26.7
+    published: '2026-07-28'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/cdc-open-viz
+  - language: javascript
+    registry: npm
+    name: "@cdc/editor"
+    url: https://www.npmjs.com/package/@cdc/editor
+    install: npm install @cdc/editor
+    official: true
+    version: 4.26.7
+    published: '2026-07-28'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/cdc-open-viz
+  - language: javascript
+    registry: npm
+    name: "@us-gov-cdc/cdc-react"
+    url: https://www.npmjs.com/package/@us-gov-cdc/cdc-react
+    install: npm install @us-gov-cdc/cdc-react
+    official: true
+    version: 1.13.0
+    published: '2024-06-04'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/cdc-react
+    note: Last published 2024-06-04 — more than two years stale relative to @cdc/* (2026-07-28).
+  - language: javascript
+    registry: npm
+    name: "@us-gov-cdc/cdc-react-icons"
+    url: https://www.npmjs.com/package/@us-gov-cdc/cdc-react-icons
+    install: npm install @us-gov-cdc/cdc-react-icons
+    official: true
+    version: 2.7.0
+    published: '2024-07-23'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/cdc-react
+  - language: javascript
+    registry: npm
+    name: tidytree
+    url: https://www.npmjs.com/package/tidytree
+    install: npm install tidytree
+    official: true
+    version: 0.7.0
+    published: '2023-12-18'
+    license: Apache-2.0
+    repository: https://github.com/cdcgov/TidyTree
+    description: Phylogenetic tree rendering component published from the CDCgov org.
+  - language: container
+    registry: ghcr
+    name: ghcr.io/cdcgov/dibbs-ecr-refiner
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/pkgs/container/dibbs-ecr-refiner
+    install: docker pull ghcr.io/cdcgov/dibbs-ecr-refiner
+    official: true
+    version: 1.0.0
+    published: '2026-09-04'
+    license: Apache-2.0
+    repository: https://github.com/CDCgov/dibbs-ecr-refiner
+    note: >-
+      Version and date read from the repository's GitHub release list (tag 1.0.0, published
+      2026-09-04), which is what the container build tracks; GHCR has no unauthenticated
+      metadata endpoint equivalent to registry.npmjs.org.
+third_party:
+  - language: python
+    registry: pypi
+    name: sodapy
+    url: https://pypi.org/project/sodapy/
+    official: false
+    note: Community Socrata SODA client; not published or endorsed by CDC. Recorded so the absence of a first-party Python SDK is not mistaken for an absence of any client.
+  - language: r
+    registry: github
+    name: EPHTrackR
+    url: https://github.com/CDCgov/EPHTrackR
+    official: true
+    version: null
+    published: null
+    note: >-
+      R interface to the Environmental Public Health Tracking API, published in the CDCgov org
+      but never released to CRAN — https://crandb.r-pkg.org/EPHTrackR returned 404 on 2026-09-05,
+      so there is no registry metadata and no installable release version to record.

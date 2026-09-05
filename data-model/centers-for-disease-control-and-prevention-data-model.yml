@@ -1,0 +1,101 @@
+generated: '2026-09-05'
+method: derived
+source: >-
+  openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json
+  (85 component schemas, $ref graph and *_id reference fields),
+  openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml,
+  openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml, and the DCAT-US
+  catalog at well-known/centers-for-disease-control-and-prevention-data-json-catalog.json.
+description: >-
+  CDC has no single data model — it has four unrelated ones, one per surface. The only surface
+  with a rich, resolvable entity graph is the DIBBs eCR Refiner; the public data APIs are
+  schemaless by design (a dataset row is whatever that dataset's columns are).
+domains:
+  - name: eCR Refiner configuration
+    surface: DIBBs eCR Refiner
+    entity_count: 85
+    root: Configuration
+    entities:
+      - name: Configuration
+        schemas: [GetConfigurationResponse, GetConfigurationsResponse, CreateConfigurationResponse, GetConfigurationResponseVersion]
+        id_field: id
+        relationships:
+          - {type: belongs_to, target: Condition, via: condition_id}
+          - {type: has_one, target: DbConfigurationStatus, via: $ref}
+          - {type: has_many, target: CustomCodeResponse, via: $ref}
+          - {type: has_many, target: DbCode, via: $ref}
+          - {type: has_many, target: DbConfigurationSectionProcessing, via: $ref}
+          - {type: has_many, target: IncludedCondition, via: $ref}
+          - {type: has_one, target: LockedByUser, via: $ref}
+          - {type: has_one, target: DbTotalConditionCodeCount, via: $ref}
+          - {type: has_one, target: Configuration, via: draft_id, note: a configuration points at its own draft}
+          - {type: has_one, target: Configuration, via: active_configuration_id, note: and at the active version it supersedes}
+      - name: Condition
+        schemas: [Condition, GetConditionResponse, GetConditionsResponse, IncludedCondition]
+        id_field: id
+        relationships:
+          - {type: has_many, target: DbCode, via: $ref}
+          - {type: has_one, target: CompletenessStatus, via: $ref}
+          - {type: has_many, target: CodeSystemsReponse, via: $ref}
+      - name: Code
+        schemas: [DbCode, CodeResponse, CustomCodeResponse, UpdateCustomCodeInput]
+        id_field: id
+        relationships:
+          - {type: belongs_to, target: DbCodeSystem, via: system_id}
+          - {type: belongs_to, target: Condition, via: condition_id}
+      - name: DbCodeSystem
+        id_field: id
+        note: The terminology system a code belongs to (LOINC, SNOMED, ICD-10 and so on).
+      - name: AuditEvent
+        id_field: id
+        relationships:
+          - {type: belongs_to, target: Condition, via: condition_id}
+        note: Surfaced through EventsResponse; the Refiner keeps an audit trail per configuration change.
+      - name: UserResponse
+        id_field: id
+        relationships:
+          - {type: belongs_to, target: Jurisdiction, via: jurisdiction_id}
+          - {type: has_one, target: NotificationsToRender, via: $ref}
+        note: >-
+          jurisdiction_id is the multi-tenancy boundary — a Refiner deployment is scoped to a
+          public health jurisdiction.
+      - name: DiscoveredConfigurationSet
+        relationships:
+          - {type: belongs_to, target: Condition, via: condition_id}
+          - {type: has_many, target: DiscoveredConfigurationVersion, via: $ref}
+        note: Produced by the simulator's discoverConfigurations operation.
+      - name: Release
+        relationships:
+          - {type: has_one, target: ReleaseNotes, via: $ref}
+  - name: FHIR query
+    surface: DIBBs Query Connector
+    entity_count: 0
+    note: >-
+      The spec models no entities of its own — request and response bodies are HL7 FHIR R4
+      resources (US Core Patient in the published example), so the data model is FHIR's, not
+      CDC's. The queryable identifiers are given, family, dob, mrn, phone, gender, race and
+      ethnicity, with race/ethnicity drawn from the CDC Race & Ethnicity code system
+      urn:oid:2.16.840.1.113883.6.238.
+  - name: Open data row
+    surface: SODA (data.cdc.gov, chronicdata.cdc.gov)
+    entity_count: 1
+    note: >-
+      A single generic entity: the dataset row, addressed by an eight-character four-by-four
+      identifier and shaped entirely by the dataset. There is no cross-dataset schema and no
+      foreign key between datasets. Per-dataset column metadata is available at
+      /api/views/{four-by-four}.json.
+  - name: Dataset catalog
+    surface: data.cdc.gov/data.json
+    entity_count: 1385
+    schema: DCAT-US 1.1 (Project Open Data Metadata Schema)
+    entities:
+      - name: dataset
+        id_field: identifier
+        relationships:
+          - {type: has_many, target: distribution, via: "distribution[]"}
+          - {type: belongs_to, target: publisher, via: publisher}
+          - {type: has_one, target: contactPoint, via: contactPoint}
+        note: >-
+          Verified against the harvested catalog: 1,385 dataset entries, each identified by a
+          https://data.cdc.gov/api/views/{four-by-four} URI, which is the join key back to the
+          SODA row model above.

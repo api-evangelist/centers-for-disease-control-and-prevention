@@ -1,0 +1,22 @@
+generated: '2026-09-05'
+method: generated
+source: >-
+  Grounded in the operationIds and endpoints declared in this repository's harvested OpenAPI
+  documents and in CDC's published API references; every operationId was grepped from the spec
+  before it was written down.
+skills:
+  - file: centers-for-disease-control-and-prevention-query-open-data.md
+    name: Query a CDC open dataset
+    api: openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml
+    operations: [queryDatasetJson, queryDatasetCsv, queryDatasetGeoJson]
+  - file: centers-for-disease-control-and-prevention-refine-ecr.md
+    name: Build and test an eCR Refiner configuration
+    api: openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json
+    operations: [getConditions, createConfiguration, associateConditionWithConfiguration, addCustomCodeToConfiguration, validateCustomCodeFromConfiguration, runInlineConfigurationTest, uploadEcr, discoverConfigurations, activateConfiguration, deactivateConfiguration, acquireConfigurationLock, releaseConfigurationLock]
+  - file: centers-for-disease-control-and-prevention-syndicate-content.md
+    name: Retrieve and embed CDC syndicated content
+    api: https://tools.cdc.gov/api/docs/info.aspx
+    operations: [listMedia, getMedia, getMediaEmbed, getMediaSyndicate, listTopics, listTags]
+    note: >-
+      The Content Syndication API has no published OpenAPI, so these are endpoint names taken
+      from CDC's own HTML reference rather than operationIds from a spec.

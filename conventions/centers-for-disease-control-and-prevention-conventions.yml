@@ -1,0 +1,135 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://dev.socrata.com/docs/endpoints.html, https://dev.socrata.com/docs/app-tokens.html,
+  https://dev.socrata.com/docs/response-codes.html, https://tools.cdc.gov/api/docs/info.aspx,
+  https://wonder.cdc.gov/wonder/help/wonder-api.html, and the harvested OpenAPI documents in
+  openapi/. Live behaviour probed 2026-09-05.
+authentication:
+  style: optional-api-key / none
+  detail: >-
+    The SODA surface is anonymous by default; an application token (X-App-Token header, or
+    $$app_token query parameter on SODA 2.x, app_token on 1.0) identifies the caller and lifts IP
+    throttling. CDC WONDER, the Tracking Network API and Content Syndication all answered
+    anonymously on 2026-09-05. The DIBBs products authenticate their own users at the deployment,
+    not through a CDC-issued credential; the Query Connector spec's OAuth2 block is commented out
+    and marked "TODO: IMPLEMENT THIS PORTION PRIOR TO SHIPPING API".
+  cross_reference: authentication/centers-for-disease-control-and-prevention-authentication.yml
+idempotency:
+  supported: false
+  coverage: none
+  header: null
+  detail: >-
+    No CDC surface documents an idempotency key, and no harvested spec declares an
+    Idempotency-Key parameter. The public data APIs (SODA, WONDER, Tracking Network, Content
+    Syndication) are read-only, so replay protection is not applicable to them. The DIBBs eCR
+    Refiner DOES have a mutating surface — 22 POST/PUT/PATCH/DELETE operations — and offers no
+    replay protection on any of them, which is why this is recorded as `none` rather than `na`.
+    A retried createConfiguration or addCustomCodeToConfiguration will create a duplicate.
+  scope: []
+reversibility:
+  grade: documented
+  detail: >-
+    The read-only public data APIs have no write surface, so reversal is not applicable to them.
+    The DIBBs eCR Refiner ships genuine paired reversal operations, but publishes no time window
+    for any of them, so this grades `documented` rather than `verified`. NO WINDOW IS ASSERTED
+    HERE, because the provider states none.
+  surfaces:
+    - surface: SODA / WONDER / Tracking Network / Content Syndication
+      write_operations: 0
+      reversibility: na
+      note: Read-only query APIs over published public-domain data.
+    - surface: DIBBs eCR Refiner
+      write_operations: 22
+      reversals:
+        - action: associateConditionWithConfiguration
+          reversal: disassociateConditionWithConfiguration
+          operation: DELETE /api/v1/configurations/{configuration_id}/code-sets/{condition_id}
+          window: null
+        - action: addCustomCodeToConfiguration
+          reversal: deleteCustomCodeFromConfiguration
+          operation: DELETE /api/v1/configurations/{configuration_id}/custom-codes/{id}
+          window: null
+        - action: addCustomSection
+          reversal: deleteCustomSection
+          operation: DELETE /api/v1/configurations/{configuration_id}/sections
+          window: null
+        - action: activateConfiguration
+          reversal: deactivateConfiguration
+          operation: PATCH /api/v1/configurations/{configuration_id}/deactivate
+          window: null
+        - action: acquireConfigurationLock
+          reversal: releaseConfigurationLock
+          operation: POST /api/v1/configurations/{configuration_id}/release-lock
+          window: null
+      irreversible:
+        - deleteCustomCodes
+        - uploadCustomCodesCsv
+      source: openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json
+dry_run_mode:
+  supported: true
+  detail: >-
+    The eCR Refiner publishes an explicit rehearsal surface: POST /api/v1/configurations/test
+    (runInlineConfigurationTest), POST /api/v1/configurations/{id}/custom-codes/validate
+    (validateCustomCodeFromConfiguration), POST /api/v1/configurations/{id}/custom-codes/confirm
+    (a two-phase upload — upload then confirm), and the /api/v1/simulator/* endpoints. No dry-run
+    exists on the public data APIs, which are read-only.
+pagination:
+  - surface: SODA
+    style: limit-offset
+    params: {limit: $limit, offset: $offset, order: $order}
+    default_limit: 1000
+    note: >-
+      $order is required for stable paging; without it the underlying result order is not
+      guaranteed across pages. Documented at https://dev.socrata.com/docs/endpoints.html.
+  - surface: Content Syndication
+    style: page-number-and-offset
+    params: {max: max, page: pagenum, offset: offset, sort: sort, order: order}
+    default_limit: 100
+    response_fields: [meta.pagination.total, meta.pagination.count, meta.pagination.max, meta.pagination.offset, meta.pagination.pageNum, meta.pagination.totalPages]
+    observed: 'GET https://tools.cdc.gov/api/v2/resources/media?max=1 -> meta.pagination.total 6734 (2026-09-05)'
+field_selection:
+  - surface: SODA
+    param: $select
+    note: SoQL projection, plus $group/$having aggregation and $q full-text search.
+  - surface: Content Syndication
+    param: fields
+    note: 'Comma-separated, supports nested selection: fields=tags{name,type}'
+filtering:
+  - surface: SODA
+    language: SoQL
+    params: [$where, $q, $group, $having, $order]
+  - surface: Content Syndication
+    params: [q, mediaTypes, name, nameContains, topic, topicIds, audience, languageIsoCode, sourceAcronym, geoName, countryCode, latitude, longitude]
+request_tracing:
+  header: X-Socrata-RequestId
+  surface: SODA
+  observed: 'Response header on every data.cdc.gov request, e.g. 01c5ffd43400fc0d984fc65d09f39cb2 (2026-09-05)'
+  note: >-
+    This is the only request-correlation identifier CDC returns anywhere. tools.cdc.gov,
+    ephtracking.cdc.gov and wonder.cdc.gov return no request id, so a caller has nothing to quote
+    in a support ticket for those three surfaces.
+versioning:
+  cross_reference: lifecycle/centers-for-disease-control-and-prevention-lifecycle.yml
+error_envelope:
+  cross_reference: errors/centers-for-disease-control-and-prevention-problem-types.yml
+  summary: >-
+    Three incompatible envelopes; none is RFC 9457. The Content Syndication API returns HTTP 200
+    with the error inside meta.status, which will silently pass a naive status-code check.
+rate_limit_signaling:
+  cross_reference: rate-limits/centers-for-disease-control-and-prevention-rate-limits.yml
+  summary: >-
+    No RateLimit-* or X-RateLimit-* headers were observed on ANY CDC surface on 2026-09-05.
+    Socrata documents a 429 on exhaustion but returns no quota headers, so a caller cannot see
+    how close to the limit it is until it is over it.
+content_negotiation:
+  - surface: SODA
+    style: extension
+    formats: [.json, .csv, .geojson, .xml, .rdf]
+  - surface: Content Syndication
+    style: extension-or-query
+    formats: [.json, .xml, .jsonp]
+    param: format
+  - surface: CDC WONDER
+    style: xml-post
+    detail: 'POST request_xml=<request-parameters>…</request-parameters> to /controller/datarequest/{databaseId}; accept_datause_restrictions=true is mandatory on every call.'

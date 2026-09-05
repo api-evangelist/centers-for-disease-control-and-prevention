@@ -54,20 +54,25 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/centers-for-disease-control-and-prevention.png
 access: 3rd-Party
 created: '2024-12-03'
-modified: '2026-04-23'
+modified: '2026-09-05'
 position: Consuming
 specificationVersion: '0.23'
 description: >-
   The Centers for Disease Control and Prevention (CDC) is the United States'
   national public health agency, part of the Department of Health and Human
-  Services. CDC operates a broad portfolio of public APIs and open data
-  services including the Socrata-powered data.cdc.gov (Open Data API for
-  hundreds of COVID-19, chronic disease, environmental health, immunization,
-  injury, and mortality datasets), the WONDER online query databases for
-  mortality, natality, and cancer statistics, the PLACES / BRFSS and
-  Environmental Public Health Tracking Network APIs, the Content Syndication
-  platform, and the open.cdc.gov developer portal that indexes these
-  resources for civic technologists and public-health researchers.
+  Services. CDC operates a broad portfolio of free, anonymously callable
+  public APIs and open data services: the Socrata-powered data.cdc.gov and
+  chronicdata.cdc.gov Open Data APIs, whose DCAT-US 1.1 catalog lists 1,385
+  datasets covering COVID-19, chronic disease, environmental health,
+  immunization, injury and mortality; the WONDER online query databases for
+  mortality, natality and cancer statistics; the PLACES / BRFSS small-area
+  estimates; the Environmental Public Health Tracking Network REST API; and
+  the Content Syndication API at tools.cdc.gov. Alongside these, CDC ships
+  open-source public health products with their own OpenAPI contracts under
+  the CDCgov GitHub organization, notably the DIBBs eCR Refiner and the DIBBs
+  Query Connector, a FHIR R4 / TEFCA query client. CDC's former developer
+  portal open.cdc.gov has been decommissioned and no longer resolves, so the
+  agency currently publishes no central API directory of its own.
 apis:
 - aid: centers-for-disease-control-and-prevention:cdc-socrata-open-data-api
   name: CDC Socrata Open Data API (data.cdc.gov)
@@ -111,7 +116,7 @@ apis:
   properties:
   - url: https://wonder.cdc.gov/
     type: Website
-  - url: https://wonder.cdc.gov/wonder/help/WONDER-API.html
+  - url: https://wonder.cdc.gov/wonder/help/wonder-api.html
     type: Documentation
   - url: https://wonder.cdc.gov/wonder/help/faq.html
     type: FAQ
@@ -150,13 +155,11 @@ apis:
   - Exposure
   - GIS
   - Water Quality
-  humanURL: https://ephtracking.cdc.gov/apihelp
+  humanURL: https://ephtracking.cdc.gov/
   baseURL: https://ephtracking.cdc.gov:443/apigateway/api/v1
   properties:
   - url: https://ephtracking.cdc.gov/
     type: Website
-  - url: https://ephtracking.cdc.gov/apihelp
-    type: Documentation
   - url: https://ephtracking.cdc.gov/DataExplorer/
     type: Explorer
   description: >-
@@ -182,24 +185,6 @@ apis:
     The CDC Public Health Media Library Content Syndication API lets developers and partner sites programmatically
     retrieve CDC health content (articles, infographics, videos, widgets, images, and microsites) in multiple
     formats to embed on third-party properties with automatic update propagation.
-- aid: centers-for-disease-control-and-prevention:open-cdc-apis-index
-  name: CDC Open Technology API Index
-  tags:
-  - Developer Portal
-  - Directory
-  - Open Technology
-  humanURL: https://open.cdc.gov/apis.html
-  properties:
-  - url: https://open.cdc.gov/apis.html
-    type: Website
-  - url: https://open.cdc.gov/
-    type: Portal
-  - url: https://github.com/CDCgov
-    type: GitHubOrganization
-  description: >-
-    open.cdc.gov is CDC's Open Technology landing site that indexes the agency's public APIs, open-source
-    GitHub repositories, and open data assets, serving as a catalog entry point for developers seeking
-    CDC interfaces across programs and centers.
 - aid: centers-for-disease-control-and-prevention:cdc-tb-nndss-socrata
   name: CDC NNDSS / MMWR Socrata Data
   tags:
@@ -213,8 +198,6 @@ apis:
     type: Catalog
   - url: https://www.cdc.gov/nndss/
     type: Program
-  - url: https://wonder.cdc.gov/nndss/nndss_table_menus.asp
-    type: Tables
   description: >-
     The National Notifiable Diseases Surveillance System (NNDSS) and Morbidity and Mortality Weekly Report
     (MMWR) tables are published as Socrata datasets on data.cdc.gov, providing weekly and historical case
@@ -241,6 +224,62 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml
+- aid: >-
+    centers-for-disease-control-and-prevention:dibbs-ecr-refiner
+  name: CDC DIBBs eCR Refiner API
+  description: >-
+    The DIBBs eCR Refiner reduces electronic initial case report (eICR) and Reportability Response
+    (RR) documents down to the data a given reportable condition actually needs, easing storage and
+    performance pressure on eCR pipelines and disease surveillance systems. CDC publishes a
+    44-operation OpenAPI 3.1.0 contract covering conditions, configurations, custom code sets,
+    section processing, an audit event log and an eCR simulator. The product is self-hosted: public
+    health jurisdictions run the Apache-2.0 container from ghcr.io/cdcgov/dibbs-ecr-refiner, so the
+    spec declares no servers[] block and the base URL is whatever the jurisdiction deploys.
+  humanURL: https://github.com/CDCgov/dibbs-ecr-refiner
+  tags:
+  - eCR
+  - eICR
+  - HL7 CDA
+  - Public Health Surveillance
+  - Reportable Conditions
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: Overlay
+    url: overlays/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-overlay.yaml
+- aid: >-
+    centers-for-disease-control-and-prevention:dibbs-query-connector
+  name: CDC DIBBs Query Connector API
+  description: >-
+    The DIBBs Query Connector is a FHIR client that lets public health agencies query health care
+    organizations directly or through a TEFCA QHIN. Its published OpenAPI 3.0.3 contract exposes a
+    health check and a query endpoint that accepts either a FHIR R4 patient resource or an HL7 v2
+    message, with US Core race and ethnicity search parameters drawn from the CDC Race and Ethnicity
+    code system. CDC runs a demo instance tracking the latest release and a dev instance tracking
+    main; the product itself is self-hosted and CC0.
+  humanURL: https://queryconnector.dev/
+  baseURL: https://connector.dibbs.tools
+  tags:
+  - FHIR
+  - HL7v2
+  - Interoperability
+  - Public Health Surveillance
+  - TEFCA
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+  - type: Overlay
+    url: overlays/centers-for-disease-control-and-prevention-dibbs-query-connector-overlay.yaml
 common:
   - type: AgenticAccess
     url: agentic-access/centers-for-disease-control-and-prevention-agentic-access.yml
@@ -248,16 +287,54 @@ common:
     url: security/centers-for-disease-control-and-prevention-domain-security.yml
   - type: Authentication
     url: authentication/centers-for-disease-control-and-prevention-authentication.yml
+  - type: Packages
+    url: packages/centers-for-disease-control-and-prevention-packages.yml
+  - type: SDKs
+    url: packages/centers-for-disease-control-and-prevention-packages.yml
+  - type: Components
+    url: components/centers-for-disease-control-and-prevention-components.yml
+  - type: MCPServer
+    url: mcp/centers-for-disease-control-and-prevention-mcp.yml
+  - type: LLMsTxt
+    url: llms/centers-for-disease-control-and-prevention-llms.txt
+  - type: Conformance
+    url: conformance/centers-for-disease-control-and-prevention-conformance.yml
+  - type: ErrorCatalog
+    url: errors/centers-for-disease-control-and-prevention-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/centers-for-disease-control-and-prevention-lifecycle.yml
+  - type: Conventions
+    url: conventions/centers-for-disease-control-and-prevention-conventions.yml
+  - type: Sandbox
+    url: sandbox/centers-for-disease-control-and-prevention-sandbox.yml
+  - type: ChangeLog
+    url: changelog/centers-for-disease-control-and-prevention-changelog.yml
+  - type: DataModel
+    url: data-model/centers-for-disease-control-and-prevention-data-model.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: RateLimits
+    url: rate-limits/centers-for-disease-control-and-prevention-rate-limits.yml
+  - type: Plans
+    url: plans/centers-for-disease-control-and-prevention-plans-pricing.yml
+  - type: FinOps
+    url: finops/centers-for-disease-control-and-prevention-finops.yml
+  - type: Documentation
+    url: https://tools.cdc.gov/api/docs/info.aspx
+  - type: APIReference
+    url: https://wonder.cdc.gov/wonder/help/wonder-api.html
+  - type: GettingStarted
+    url: https://dev.socrata.com/consumers/getting-started.html
+  - type: SignUp
+    url: https://data.cdc.gov/signup
+  - type: OpenData
+    url: https://chronicdata.cdc.gov/
   - type: LinkedIn
     url: https://www.linkedin.com/company/centers-for-disease-control-and-prevention
   - type: Website
     url: https://www.cdc.gov/
   - type: OpenData
     url: https://data.cdc.gov/
-  - type: Portal
-    url: https://open.cdc.gov/
-  - type: APIs
-    url: https://open.cdc.gov/apis.html
   - type: GitHubOrganization
     url: https://github.com/CDCgov
   - type: WONDER
@@ -277,3 +354,8 @@ integrations:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v3

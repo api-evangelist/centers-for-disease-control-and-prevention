@@ -1,0 +1,47 @@
+generated: '2026-09-05'
+method: derived
+status: candidate
+source: >-
+  Derived from openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml,
+  openapi/centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml and the live,
+  anonymously-callable Content Syndication and Environmental Public Health Tracking endpoints
+  probed 2026-09-05.
+deployment:
+  mode: none
+  auth: none
+  verified: searched
+note: >-
+  CDC ships NO MCP server. Searched the CDCgov GitHub org (repository search for `mcp` returned
+  0 repositories on 2026-09-05), the npm registry, and the web; nothing first-party exists. Two
+  relevant third-party efforts do — a U.S. Digital Corps pilot that wrapped CDC PLACES data in an
+  MCP server, and `@cyanheads/cdc-health-mcp-server` on npm — but neither is published, operated
+  or endorsed by CDC, so neither is recorded as a CDC surface. The tools below are a CANDIDATE
+  list derived from operations CDC does publish; no endpoint is asserted, because none exists.
+tools:
+  - name: query_dataset_json
+    description: Query a data.cdc.gov or chronicdata.cdc.gov dataset as JSON with SoQL filters.
+    source_operation: openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml#queryDatasetJson
+  - name: query_dataset_csv
+    description: Query a dataset and return CSV.
+    source_operation: openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml#queryDatasetCsv
+  - name: query_dataset_geojson
+    description: Query a geospatial dataset and return GeoJSON.
+    source_operation: openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml#queryDatasetGeoJson
+  - name: query_dataset_v3
+    description: Query a dataset through the SODA v3 query endpoint.
+    source_operation: openapi/centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml#queryDatasetV3Get
+  - name: search_media
+    description: Full-text search CDC syndicated health content (articles, infographics, videos, microsites).
+    source_endpoint: "GET https://tools.cdc.gov/api/v2/resources/media"
+    verified: probed 2026-09-05, HTTP 200, 6734 media resources, no authentication
+  - name: get_media
+    description: Retrieve one syndicated CDC content item by id.
+    source_endpoint: "GET https://tools.cdc.gov/api/v2/resources/media/{id}"
+  - name: list_tracking_content_areas
+    description: List Environmental Public Health Tracking content areas (air quality, asthma, cancer, lead, and so on).
+    source_endpoint: "GET https://ephtracking.cdc.gov/apigateway/api/v1/contentareas/json"
+    verified: probed 2026-09-05, HTTP 200, anonymous
+  - name: list_open_datasets
+    description: Enumerate the 1,385 CDC open datasets from the DCAT-US catalog.
+    source_endpoint: "GET https://data.cdc.gov/data.json"
+    verified: probed 2026-09-05, HTTP 200, DCAT-US 1.1

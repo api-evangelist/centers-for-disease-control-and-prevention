@@ -1,0 +1,61 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://github.com/CDCgov/dibbs-ecr-refiner/releases and
+  https://github.com/CDCgov/dibbs-query-connector/releases, read via the GitHub API 2026-09-05.
+scheme: semver
+note: >-
+  CDC publishes NO changelog for its public data APIs. data.cdc.gov, chronicdata.cdc.gov,
+  wonder.cdc.gov, ephtracking.cdc.gov and tools.cdc.gov carry no dated release notes, no
+  version history and no "what's new" feed for the interface itself. Dataset-level updates are
+  visible through the Socrata catalog (and are what this repository's blogs/ directory tracks),
+  but a dataset refresh is not an API change. The only dated, versioned release history CDC
+  publishes for anything with a contract is the DIBBs product line on GitHub, captured below.
+surfaces:
+  - name: DIBBs eCR Refiner
+    changelog: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+    current_version: 1.0.0
+    current_released: '2026-09-04'
+    entries:
+      - version: 1.0.0
+        date: '2026-09-04'
+        highlights: First 1.0 release. Corresponds to the 44-operation OpenAPI 3.1.0 harvested in openapi/.
+      - version: 0.2.1
+        date: '2026-07-28'
+      - version: 0.1.0
+        date: '2026-06-29'
+      - version: 0.0.12
+        date: '2026-05-22'
+      - version: v0.0.11
+        date: '2026-05-05'
+      - version: 0.0.10-rc1
+        date: '2026-03-30'
+  - name: DIBBs Query Connector
+    changelog: https://github.com/CDCgov/dibbs-query-connector/releases
+    current_version: v1.2.2
+    current_released: '2026-09-02'
+    entries:
+      - version: v1.2.2
+        date: '2026-09-02'
+      - version: v1.2.1
+        date: '2026-08-26'
+      - version: v1.2.0
+        date: '2026-07-22'
+      - version: v1.1.2
+        date: '2026-07-17'
+      - version: v1.1.1
+        date: '2026-07-09'
+      - version: v1.1.0
+        date: '2026-07-08'
+      - version: v1.0.0
+        date: '2026-06-30'
+  - name: CDC Open Visualization (COVE) components
+    changelog: https://github.com/CDCgov/cdc-open-viz/releases
+    current_version: 4.26.7
+    current_released: '2026-07-28'
+    note: Version and date read from npm registry metadata for @cdc/core.
+undocumented_surfaces:
+  - data.cdc.gov / chronicdata.cdc.gov (SODA)
+  - wonder.cdc.gov (CDC WONDER)
+  - ephtracking.cdc.gov (Environmental Public Health Tracking)
+  - tools.cdc.gov (Content Syndication)

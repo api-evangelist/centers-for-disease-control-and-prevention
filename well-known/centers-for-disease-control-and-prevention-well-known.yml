@@ -1,0 +1,186 @@
+generated: '2026-09-05'
+method: probed
+source: live GET probes of the named /.well-known/ path list on every host this record knows
+hit_count: 0
+note: >-
+  Every named path was probed on eleven hosts and NOT ONE returned a document. No file was
+  saved, so no WellKnown, SecurityTxt, APICatalog or AgentCard pointer is emitted — this
+  artifact records a measured absence, not a surface. Two response patterns are worth reading
+  correctly. (1) cdc.gov, www.cdc.gov and wonder.cdc.gov answer 403 "Access Denied" from the
+  Akamai edge for EVERY path including the negative control, with a browser User-Agent and full
+  browser headers; ordinary pages on the same hosts return 200 with the same client, so this is
+  an edge policy on unknown paths rather than a served document. (2) data.cdc.gov and
+  chronicdata.cdc.gov (Socrata/Tyler) return a real 404 that carries the ~556KB portal SPA shell
+  as its body — a large body here is a 404 page, not content. (3) open.cdc.gov does not resolve
+  at all: it has no A record at 8.8.8.8 or 1.1.1.1 (NOERROR/NODATA against the cdc.gov SOA), and
+  the site's source repo CDCgov/opencdc was archived 2024-03-21. The negative control
+  /.well-known/cdc-negative-control-7f3ab91c.json returned no 2xx on any host, so no host in
+  this set echoes paths.
+path_echo_control: passed
+hosts:
+  - host: https://cdc.gov
+    edge: Akamai returns 403 for every unknown path, including the negative control
+    documents:
+      - {path: /.well-known/security.txt, status: 403}
+      - {path: /.well-known/openid-configuration, status: 403}
+      - {path: /.well-known/oauth-authorization-server, status: 403}
+      - {path: /.well-known/oauth-protected-resource, status: 403}
+      - {path: /.well-known/api-catalog, status: 403}
+      - {path: /.well-known/ai-plugin.json, status: 403}
+      - {path: /.well-known/ucp.json, status: 403}
+      - {path: /.well-known/acp.json, status: 403}
+      - {path: /.well-known/aauth-resource.json, status: 403}
+      - {path: /.well-known/agent-card.json, status: 403}
+      - {path: /.well-known/agent.json, status: 403}
+      - {path: /.well-known/apis.json, status: 403}
+      - {path: /apis.json, status: 403}
+      - {path: /apis.yml, status: 403}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 403}
+  - host: https://www.cdc.gov
+    edge: Akamai returns 403 for every unknown path, including the negative control
+    documents:
+      - {path: /.well-known/security.txt, status: 403}
+      - {path: /.well-known/openid-configuration, status: 403}
+      - {path: /.well-known/oauth-authorization-server, status: 403}
+      - {path: /.well-known/oauth-protected-resource, status: 403}
+      - {path: /.well-known/api-catalog, status: 403}
+      - {path: /.well-known/ai-plugin.json, status: 403}
+      - {path: /.well-known/aauth-resource.json, status: 403}
+      - {path: /.well-known/agent-card.json, status: 403}
+      - {path: /.well-known/agent.json, status: 403}
+      - {path: /.well-known/apis.json, status: 403}
+      - {path: /apis.json, status: 403}
+      - {path: /apis.yml, status: 403}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 403}
+  - host: https://data.cdc.gov
+    edge: Socrata portal; real 404 whose body is the 556KB portal SPA shell
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/ucp.json, status: 404}
+      - {path: /.well-known/acp.json, status: 404}
+      - {path: /.well-known/aauth-resource.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /.well-known/apis.json, status: 404}
+      - {path: /apis.json, status: 404}
+      - {path: /apis.yml, status: 404}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 404}
+      - {path: /data.json, status: 200, file: centers-for-disease-control-and-prevention-data-json-catalog.json, note: "Not a /.well-known/ path — the Project Open Data / DCAT-US 1.1 catalog served at the domain root. Real, parses, 1385 datasets. Saved and indexed here because it is the one machine-readable discovery document CDC actually serves; it does not satisfy the well-known checks."}
+  - host: https://chronicdata.cdc.gov
+    edge: Socrata portal; serves the byte-identical /data.json as data.cdc.gov (same MD5 9a37c2c4862b2af2af5921f12eb80182)
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /.well-known/aauth-resource.json, status: 404}
+      - {path: /.well-known/apis.json, status: 404}
+      - {path: /apis.json, status: 404}
+      - {path: /apis.yml, status: 404}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 404}
+  - host: https://wonder.cdc.gov
+    edge: Akamai returns 403 for every unknown path, including the negative control
+    documents:
+      - {path: /.well-known/security.txt, status: 403}
+      - {path: /.well-known/openid-configuration, status: 403}
+      - {path: /.well-known/oauth-authorization-server, status: 403}
+      - {path: /.well-known/oauth-protected-resource, status: 403}
+      - {path: /.well-known/api-catalog, status: 403}
+      - {path: /.well-known/ai-plugin.json, status: 403}
+      - {path: /.well-known/aauth-resource.json, status: 403}
+      - {path: /.well-known/agent-card.json, status: 403}
+      - {path: /.well-known/agent.json, status: 403}
+      - {path: /.well-known/apis.json, status: 403}
+      - {path: /apis.json, status: 403}
+      - {path: /apis.yml, status: 403}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 403}
+  - host: https://ephtracking.cdc.gov
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/aauth-resource.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /.well-known/apis.json, status: 404}
+      - {path: /apis.json, status: 404}
+      - {path: /apis.yml, status: 404}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 404}
+  - host: https://tools.cdc.gov
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/aauth-resource.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /.well-known/apis.json, status: 404}
+      - {path: /apis.json, status: 404}
+      - {path: /apis.yml, status: 404}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 404}
+  - host: https://open.cdc.gov
+    edge: does not resolve — no A record (NOERROR/NODATA under the cdc.gov SOA at 8.8.8.8 and 1.1.1.1)
+    documents:
+      - {path: /.well-known/security.txt, status: 0}
+      - {path: /.well-known/api-catalog, status: 0}
+      - {path: /.well-known/agent-card.json, status: 0}
+      - {path: /.well-known/agent.json, status: 0}
+      - {path: /apis.json, status: 0}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 0}
+  - host: https://dibbs.tools
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/aauth-resource.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /.well-known/apis.json, status: 404}
+      - {path: /apis.json, status: 404}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 404}
+  - host: https://queryconnector.dev
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/aauth-resource.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /.well-known/apis.json, status: 404}
+      - {path: /apis.json, status: 404}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 404}
+  - host: https://connector.dibbs.tools
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/aauth-resource.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+      - {path: /.well-known/apis.json, status: 404}
+      - {path: /apis.json, status: 404}
+      - {path: /.well-known/cdc-negative-control-7f3ab91c.json, status: 404}

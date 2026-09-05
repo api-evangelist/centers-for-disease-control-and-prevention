@@ -1,0 +1,66 @@
+generated: '2026-09-05'
+method: searched
+source: https://github.com/CDCgov/cdc-open-viz
+docs: https://github.com/CDCgov/cdc-open-viz
+description: >-
+  CDC Open Visualization (COVE) is CDC's first-party client-side component library for embedding
+  CDC data visualizations in a web page. The packages are published to npm under the @cdc scope
+  from github.com/CDCgov/cdc-open-viz (Apache-2.0), and are distinct from the server-side SDK
+  surface catalogued in packages/. A second, older family (@us-gov-cdc/cdc-react) supplies the
+  shared React UI primitives and SVG icon set for CDC web applications.
+families:
+  - name: CDC Open Visualization (COVE)
+    repository: https://github.com/CDCgov/cdc-open-viz
+    license: Apache-2.0
+    loader: "@cdc/core"
+    version: 4.26.7
+    published: '2026-07-28'
+    components:
+      - name: "@cdc/chart"
+        kind: react-component
+        description: Renders tabular data as bar, line, pie, area, scatter, box and combo charts.
+      - name: "@cdc/map"
+        kind: react-component
+        description: Renders tabular data on US national, state, county and world maps.
+      - name: "@cdc/dashboard"
+        kind: react-component
+        description: Combines multiple visualizations into a single filterable dashboard.
+      - name: "@cdc/data-bite"
+        kind: react-component
+        description: Displays a single headline statistic in a callout.
+      - name: "@cdc/waffle-chart"
+        kind: react-component
+        description: Displays a single proportion as a waffle grid.
+      - name: "@cdc/data-table"
+        kind: react-component
+        description: Standalone accessible data table.
+      - name: "@cdc/markup-include"
+        kind: react-component
+        description: Renders HTML content pulled from an outside source.
+      - name: "@cdc/editor"
+        kind: react-component
+        description: Authoring UI that produces the JSON config the other components consume.
+  - name: CDC React (design system primitives)
+    repository: https://github.com/CDCgov/cdc-react
+    license: Apache-2.0
+    version: 1.13.0
+    published: '2024-06-04'
+    components:
+      - name: "@us-gov-cdc/cdc-react"
+        kind: react-component-library
+        description: Shared React UI primitives for CDC web applications.
+      - name: "@us-gov-cdc/cdc-react-icons"
+        kind: icon-library
+        description: SVG icon library for CDC web applications.
+    note: Both packages last published in 2024; the family is materially staler than COVE.
+hosted_surfaces:
+  - name: CDC Content Syndication embed + widget endpoints
+    url: https://tools.cdc.gov/api/docs/info.aspx
+    description: >-
+      The Content Syndication API exposes /v2/resources/media/{ID}/embed and
+      /v2/resources/media/{ID}/syndicate, which return CDC-hosted markup for embedding CDC
+      content directly in a third-party page, with strip/format controls (stripScripts,
+      stripAnchors, cssClasses, xpath, of=xhtml|xml). This is a hosted embed surface rather
+      than an installable component.
+    verified: '2026-09-05'
+    http_status: 200

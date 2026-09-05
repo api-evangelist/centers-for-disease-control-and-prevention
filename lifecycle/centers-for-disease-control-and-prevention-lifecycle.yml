@@ -1,0 +1,84 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  Provider documentation and GitHub release history, verified 2026-09-05. Each claim below names
+  the URL it came from; absences were probed, not assumed.
+versioning:
+  scheme: mixed
+  note: >-
+    CDC versions per surface, not agency-wide. There is no single API version, no version header,
+    and no published cross-agency versioning policy.
+  surfaces:
+    - surface: SODA (data.cdc.gov, chronicdata.cdc.gov)
+      scheme: uri-path
+      current: '2.1'
+      also_available: '3.0 (/api/v3/views/{id}/query.json)'
+      docs: https://dev.socrata.com/docs/endpoints.html
+      note: Versioning is set by the platform vendor (Socrata / Tyler Data & Insights), not by CDC.
+    - surface: Content Syndication
+      scheme: uri-path
+      current: v2
+      docs: https://tools.cdc.gov/api/docs/info.aspx
+    - surface: Environmental Public Health Tracking
+      scheme: uri-path
+      current: v1
+      base: https://ephtracking.cdc.gov/apigateway/api/v1
+      probed: '2026-09-05, HTTP 200 anonymous on /contentareas/json'
+    - surface: CDC WONDER
+      scheme: database-id
+      current: 'per-database (e.g. D76 Detailed Mortality)'
+      docs: https://wonder.cdc.gov/wonder/help/wonder-api.html
+    - surface: DIBBs eCR Refiner
+      scheme: semver
+      current: 1.0.0
+      released: '2026-09-04'
+      docs: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+    - surface: DIBBs Query Connector
+      scheme: semver
+      current: v1.2.2
+      released: '2026-09-02'
+      docs: https://github.com/CDCgov/dibbs-query-connector/releases
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: >-
+    No deprecation policy, Sunset/Deprecation header support, or retirement calendar was found on
+    any CDC surface. This absence is material: CDC retired its developer portal without one — see
+    retired_surfaces below.
+sla:
+  url: null
+  uptime_target: null
+  note: CDC publishes no SLA for any of these APIs; they are free public-domain data services.
+status_page: null
+status_page_note: >-
+  CDC operates no status page for its APIs. https://status.socrata.com/ ("Tyler Data & Insights
+  System Status", HTTP 200 on 2026-09-05) covers the Socrata platform that data.cdc.gov and
+  chronicdata.cdc.gov run on, but it is the VENDOR's page, not CDC's, and it says nothing about
+  CDC WONDER, the Tracking Network API, or Content Syndication. No StatusPage pointer is emitted
+  on the strength of a supplier's page.
+retired_surfaces:
+  - name: open.cdc.gov (CDC Open Technology developer portal and API index)
+    status: decommissioned
+    evidence: >-
+      No DNS A record as of 2026-09-05 (NOERROR/NODATA under the cdc.gov SOA at both 8.8.8.8 and
+      1.1.1.1); curl fails with "Could not resolve host". The site's source repository
+      CDCgov/opencdc was ARCHIVED on 2024-03-21 and still carries the agency's own API index at
+      _data/apis.yml.
+    impact: >-
+      CDC no longer publishes a developer portal or an API directory anywhere. This was the single
+      entry point that told a developer which CDC APIs exist; nothing replaced it. Removed from
+      apis.yml in this pass.
+  - name: https://wonder.cdc.gov/wonder/help/WONDER-API.html
+    status: moved
+    evidence: 404 on 2026-09-05; the live document is the lowercase https://wonder.cdc.gov/wonder/help/wonder-api.html (HTTP 200). Corrected in apis.yml.
+  - name: https://ephtracking.cdc.gov/apihelp
+    status: gone
+    evidence: >-
+      404 on 2026-09-05 (also /apihelp/). The API itself is still live and anonymous —
+      https://ephtracking.cdc.gov/apigateway/api/v1/contentareas/json returned HTTP 200 with real
+      JSON on the same date — so the Tracking Network API is now an UNDOCUMENTED live API.
+      Removed from apis.yml.
+  - name: https://wonder.cdc.gov/nndss/nndss_table_menus.asp
+    status: gone
+    evidence: 404 on 2026-09-05. Removed from apis.yml.
+deprecated_operations: []

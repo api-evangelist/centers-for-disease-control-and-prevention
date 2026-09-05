@@ -4,124 +4,114 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Centers for Disease Control and Prevention
 providerId: centers-for-disease-control-and-prevention
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+modified: '2026-09-05'
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://dev.socrata.com/docs/app-tokens.html, https://dev.socrata.com/docs/queries/limit.html,
+  https://wonder.cdc.gov/wonder/help/wonder-api.html and https://tools.cdc.gov/api/docs/info.aspx,
+  read 2026-09-05. Replaces the 2026-05-04 bulk-sweep scaffold, whose tier quotas and
+  X-RateLimit-* headers were placeholder values CDC never published.
 tags:
   - CDC
-  - Environmental Health
-  - Epidemiology
-  - Federal Government
-  - Healthcare
   - Open Data
   - Public Health
   - Socrata
-  - Surveillance
   - WONDER
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Centers for Disease Control and Prevention
-  API surface. Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults
-  are scaffold values to be replaced with published provider limits.
+description: >-
+  Published rate limits across the CDC API surface. CDC does not operate a quota system: its data
+  APIs are free and anonymous, and the only enforcement is Socrata's IP-based throttle on
+  token-less SODA traffic. What is missing is the runtime signal — no CDC surface returns any
+  RateLimit-* or X-RateLimit-* response header, so a caller cannot see its remaining budget.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+headers_note: >-
+  PROBED 2026-09-05. Responses from https://data.cdc.gov/resource/{id}.json,
+  https://tools.cdc.gov/api/v2/resources/media and
+  https://ephtracking.cdc.gov/apigateway/api/v1/contentareas/json carried NO rate-limit headers
+  of any kind. The only correlation header present anywhere is X-Socrata-RequestId, on SODA.
+  The previous version of this file claimed X-RateLimit-Limit / -Remaining / -Reset and
+  RateLimit-Policy; none of those are served.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
+  quotaExceeded: null
   serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - CDC Socrata Open Data API (data.cdc.gov)
-      - CDC WONDER API
-      - CDC PLACES / 500 Cities API
-      - CDC Environmental Public Health Tracking Network API
-      - CDC Public Health Media Library (Content Syndication)
-      - CDC Open Technology API Index
-      - CDC NNDSS / MMWR Socrata Data
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - CDC Socrata Open Data API (data.cdc.gov)
-      - CDC WONDER API
-      - CDC PLACES / 500 Cities API
-      - CDC Environmental Public Health Tracking Network API
-      - CDC Public Health Media Library (Content Syndication)
-      - CDC Open Technology API Index
-      - CDC NNDSS / MMWR Socrata Data
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
+  - tier: anonymous
+    name: SODA without an application token
+    surface: data.cdc.gov, chronicdata.cdc.gov
+    scope: per-ip
+    limit: null
+    window: null
+    published_value: false
+    enforcement: throttling
+    responseCode: 429
+    description: >-
+      "Without an application token, your requests will be associated only with your IP address…
+      IP addresses that make too many requests during a given period may be subject to
+      throttling." No number is published. Exhaustion returns HTTP 429.
+    source: https://dev.socrata.com/docs/app-tokens.html
+  - tier: app-token
+    name: SODA with an application token
+    surface: data.cdc.gov, chronicdata.cdc.gov
+    scope: per-token
+    limit: null
+    window: null
+    published_value: false
+    enforcement: none-unless-abusive
+    description: >-
+      "Currently we do not throttle API requests that are using an application token, unless
+      those requests are determined to be abusive or malicious." The token is sent as the
+      X-App-Token header (SODA 2.x/3.0) or the $$app_token query parameter (SODA 2.0/2.1).
+    source: https://dev.socrata.com/docs/app-tokens.html
+  - tier: response-size
+    name: SODA maximum rows per request
+    surface: data.cdc.gov, chronicdata.cdc.gov
+    scope: per-request
+    limit: 50000
+    unit: rows
+    window: request
+    published_value: true
+    description: >-
+      "$limit … defaults to 1,000 records per request." "Version 2.0 endpoints have a maximum
+      $limit of 50,000." "Version 2.1 and 3.0 endpoints have no maximum." The 50,000 figure is
+      the v2.0 ceiling; page with $limit/$offset and a stable $order.
+    source: https://dev.socrata.com/docs/queries/limit.html
+  - tier: automated
+    name: CDC WONDER query cadence for automated data mining
+    surface: wonder.cdc.gov
+    scope: per-client
+    limit: 1
+    unit: queries
+    window: 2 minutes
+    published_value: true
+    description: >-
+      "Firing a query every 2 minutes provides good recovery time of our system." For automated
+      mining: "please post the queries in a series, one at a time. Please don't run multiple
+      instances simultaneously." Human-driven queries embedded in a web page are exempt: "then
+      don't worry about timing." This is published guidance, not an enforced quota.
+    source: https://wonder.cdc.gov/wonder/help/wonder-api.html
+  - tier: page-size
+    name: Content Syndication maximum items per page
+    surface: tools.cdc.gov
+    scope: per-request
     limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - CDC Socrata Open Data API (data.cdc.gov)
-      - CDC WONDER API
-      - CDC PLACES / 500 Cities API
-      - CDC Environmental Public Health Tracking Network API
-      - CDC Public Health Media Library (Content Syndication)
-      - CDC Open Technology API Index
-      - CDC NNDSS / MMWR Socrata Data
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - CDC Socrata Open Data API (data.cdc.gov)
-      - CDC WONDER API
-      - CDC PLACES / 500 Cities API
-      - CDC Environmental Public Health Tracking Network API
-      - CDC Public Health Media Library (Content Syndication)
-      - CDC Open Technology API Index
-      - CDC NNDSS / MMWR Socrata Data
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - CDC Socrata Open Data API (data.cdc.gov)
-      - CDC WONDER API
-      - CDC PLACES / 500 Cities API
-      - CDC Environmental Public Health Tracking Network API
-      - CDC Public Health Media Library (Content Syndication)
-      - CDC Open Technology API Index
-      - CDC NNDSS / MMWR Socrata Data
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+    unit: items
+    window: request
+    published_value: true
+    description: >-
+      The `max` parameter sets items per page and defaults to 100; page with `pagenum` or
+      `offset` and read meta.pagination.totalPages. No throttle is documented for this API and
+      no rate-limit header is returned.
+    source: https://tools.cdc.gov/api/docs/info.aspx
+undocumented_surfaces:
+  - surface: ephtracking.cdc.gov (Environmental Public Health Tracking API)
+    note: >-
+      No rate limit is documented anywhere. The API's own help page,
+      https://ephtracking.cdc.gov/apihelp, returned 404 on 2026-09-05 while the API itself
+      returned 200 — the limits are undocumented because the documentation is gone.

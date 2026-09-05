@@ -1,0 +1,83 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://github.com/CDCgov/dibbs-ecr-refiner (README, read 2026-09-05),
+  https://github.com/CDCgov/dibbs-star-wars-ecr-data,
+  https://connector.dibbs.tools, https://queryconnector.dev,
+  openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json
+description: >-
+  CDC operates no sandbox for its public data APIs — none is needed, because they are read-only,
+  anonymous and free, so production IS the test environment. The DIBBs product line is different:
+  it ships hosted demo and dev instances, a synthetic patient-data corpus, an in-product
+  simulator, and local seed credentials, all published by CDC.
+public_data_apis:
+  sandbox: none
+  reason: >-
+    SODA, CDC WONDER, the Tracking Network API and Content Syndication are read-only queries over
+    published public-domain data with no authentication and no cost. There is nothing to
+    simulate. A caller can safely exercise every operation against the live host.
+  safe_probe_examples:
+    - "GET https://data.cdc.gov/resource/9mfq-cb36.json?$limit=1"
+    - "GET https://tools.cdc.gov/api/v2/resources/media?max=1"
+    - "GET https://ephtracking.cdc.gov/apigateway/api/v1/contentareas/json"
+    - "GET https://data.cdc.gov/data.json"
+hosted_instances:
+  - name: DIBBs Query Connector — demo instance
+    url: https://connector.dibbs.tools
+    tracks: latest official release
+    http_status: 200
+    verified: '2026-09-05'
+    source: 'CDCgov/dibbs-query-connector README: "Access to the demo instance of the latest official release of DIBBs Query Connector is available at https://connector.dibbs.tools".'
+  - name: DIBBs Query Connector — dev instance
+    url: https://queryconnector.dev
+    tracks: main branch
+    http_status: 200
+    verified: '2026-09-05'
+    health_check: 'GET https://queryconnector.dev/api -> {"status":"OK"}'
+    source: 'CDCgov/dibbs-query-connector README: "Access to the dev instance of the main branch of DIBBs Query Connector is available at https://queryconnector.dev".'
+  - name: DIBBs eCR Refiner — demo instance
+    url: https://refiner.dibbs.tools
+    http_status: 502
+    verified: '2026-09-05'
+    note: Host resolves and terminates TLS but returned 502 Bad Gateway on the probe date; recorded as observed, not as available.
+test_data:
+  - name: DIBBs Star Wars eCR data
+    url: https://github.com/CDCgov/dibbs-star-wars-ecr-data
+    license: Apache-2.0
+    updated: '2026-07-09'
+    description: >-
+      CDC-published synthetic eICR/RR documents built around Star Wars characters, so no real
+      patient data is ever needed to exercise the eCR pipeline. This is CDC's equivalent of a
+      test-card table.
+  - name: Query Connector example FHIR Patient
+    source: openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml
+    description: >-
+      The /api/query requestBody carries a complete example US Core Patient resource (Lee Shaw,
+      MRN 8692756, DOB 1975-12-06) that can be posted verbatim against the demo instance.
+    note: Values quoted from CDC's own published spec; not invented here.
+simulator:
+  surface: DIBBs eCR Refiner
+  endpoints:
+    - "POST /api/v1/simulator/upload (uploadEcr)"
+    - "POST /api/v1/simulator/discover-configurations (discoverConfigurations)"
+    - "POST /api/v1/configurations/test (runInlineConfigurationTest)"
+    - "POST /api/v1/configurations/{configuration_id}/custom-codes/validate (validateCustomCodeFromConfiguration)"
+  description: >-
+    A first-class rehearsal surface: upload an eCR, discover which configurations would match,
+    and test a configuration inline without activating it. Custom-code uploads are two-phase
+    (upload then confirm), so a CSV can be inspected before it lands.
+local_credentials:
+  surface: DIBBs eCR Refiner local Docker Compose
+  url: http://localhost:8081/
+  note: >-
+    The repository README publishes seed logins for the locally-seeded database (a `refiner`
+    user and a `refiner2` secondary user, each with a matching password). They exist only in the
+    local development container and grant nothing on any CDC host; they are recorded here as
+    documentation of the local test path, not as credentials.
+  source: https://github.com/CDCgov/dibbs-ecr-refiner
+socrata_evergreen:
+  url: https://evergreen.data.socrata.com/signup
+  note: >-
+    The application-token signup CDC's SODA docs link to is hosted by the platform vendor
+    (Socrata / Tyler Data & Insights), not by CDC. It issues a token usable across Socrata
+    portals including data.cdc.gov.

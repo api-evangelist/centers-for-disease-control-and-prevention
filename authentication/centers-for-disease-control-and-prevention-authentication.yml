@@ -1,6 +1,6 @@
-generated: '2026-07-11'
+generated: '2026-09-05'
 method: derived
-source: openapi/centers-for-disease-control-and-prevention-openapi.yml
+source: openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml, openapi/centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml
 summary:
   types:
   - apiKey
@@ -16,4 +16,5 @@ schemes:
     an app token raises rate limits. May also be supplied as the
     $$app_token query parameter.
   sources:
-  - openapi/centers-for-disease-control-and-prevention-openapi.yml
+  - openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml
+  - openapi/centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml

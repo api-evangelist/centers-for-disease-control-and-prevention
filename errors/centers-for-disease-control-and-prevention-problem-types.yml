@@ -1,0 +1,78 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  Live error responses observed 2026-09-05 against data.cdc.gov and tools.cdc.gov, plus the
+  4xx/5xx responses declared in the harvested DIBBs OpenAPI documents.
+format: vendor-specific
+note: >-
+  CDC has no single error contract. Each surface carries its own envelope and none of them is
+  RFC 9457 application/problem+json. An agent must branch on the surface it is calling.
+envelopes:
+  - surface: SODA (data.cdc.gov, chronicdata.cdc.gov)
+    content_type: application/json
+    shape: '{"code": string, "error": true, "message": string, "data": object}'
+    observed: >-
+      GET https://data.cdc.gov/resource/zzzz-zzzz.json -> HTTP 404
+      {"code":"dataset.missing","error":true,"message":"Not found","data":{"id":"zzzz-zzzz"}}
+    docs: https://dev.socrata.com/docs/response-codes.html
+  - surface: Content Syndication (tools.cdc.gov)
+    content_type: application/json
+    shape: '{"meta": {"status": int, "message": [{"type","code","id","userMessage","developerMessage"}], "resultSet", "pagination"}, "results": []}'
+    observed: >-
+      GET https://tools.cdc.gov/api/v2/resources/media/syndicationlist.json -> HTTP 200 with an
+      IN-BODY error: meta.status 400, message[0] {"type":"Error","code":"ID","userMessage":"Id
+      could not be parsed as a number"}. The transport status was 200; the error is only in the
+      body. Agents MUST read meta.status, not the HTTP code, on this surface.
+    docs: https://tools.cdc.gov/api/docs/info.aspx
+  - surface: DIBBs eCR Refiner
+    content_type: application/json
+    shape: '{"detail": [{"loc": [], "msg": string, "type": string}]}'
+    source_spec: openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json
+    note: FastAPI HTTPValidationError; declared on 37 of 44 operations as the 422 response.
+problems:
+  - status: 404
+    code: dataset.missing
+    title: Dataset not found
+    surface: SODA
+    remediation: Check the four-by-four dataset identifier at https://data.cdc.gov/browse.
+    evidence: probed 2026-09-05 https://data.cdc.gov/resource/zzzz-zzzz.json
+  - status: 429
+    title: Too Many Requests
+    surface: SODA
+    remediation: >-
+      Register an application token and send it as the X-App-Token header (or the $$app_token
+      query parameter on SODA 2.x). Socrata states it does not throttle token-bearing requests
+      unless they are abusive.
+    evidence: https://dev.socrata.com/docs/app-tokens.html
+  - status: 400
+    title: Bad Request
+    surface: Content Syndication
+    remediation: Read meta.message[].userMessage; the transport status may still be 200.
+    evidence: https://tools.cdc.gov/api/docs/info.aspx
+  - status: 500
+    title: Server Error
+    surface: Content Syndication
+    evidence: https://tools.cdc.gov/api/docs/info.aspx
+  - status: 422
+    title: Validation Error
+    surface: DIBBs eCR Refiner
+    source_operation: openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json#createConfiguration
+    remediation: Correct the field named in detail[].loc.
+  - status: 400
+    title: Missing patient identifiers
+    surface: DIBBs Query Connector
+    source_operation: openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml#/api/query
+    remediation: Supply at least one of given, family, dob, mrn or phone.
+  - status: 500
+    title: "Something went wrong :("
+    surface: DIBBs Query Connector
+    source_operation: openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml#/api/query
+    note: Response description quoted verbatim from the provider's spec.
+  - status: 403
+    title: Access Denied (Akamai edge)
+    surface: www.cdc.gov, cdc.gov, wonder.cdc.gov
+    note: >-
+      Returned as an HTML body for unknown paths, including well-known probes and a random
+      negative control. This is an edge policy on unrecognised paths, not an application error,
+      and it is NOT evidence that a document is withheld.
+    evidence: probed 2026-09-05

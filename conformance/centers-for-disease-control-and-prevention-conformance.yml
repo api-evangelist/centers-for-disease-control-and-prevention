@@ -1,0 +1,118 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  Harvested CDC contracts (openapi/*, well-known/*-data-json-catalog.json) plus the published
+  provider documentation named in each evidence field. Probed 2026-09-05.
+standards:
+  - id: dcat-us-1.1
+    name: DCAT-US / Project Open Data Metadata Schema v1.1
+    conforms: true
+    evidence: >-
+      https://data.cdc.gov/data.json returned HTTP 200 with
+      "@context": "https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld" and
+      "conformsTo": "https://project-open-data.cio.gov/v1.1/schema", describing 1,385 datasets.
+      The document is saved verbatim at
+      well-known/centers-for-disease-control-and-prevention-data-json-catalog.json.
+      chronicdata.cdc.gov serves the byte-identical document (MD5 9a37c2c4862b2af2af5921f12eb80182).
+    domain_standard: true
+    sector: government-open-data
+  - id: fhir-r4
+    name: HL7 FHIR R4
+    conforms: true
+    evidence: >-
+      openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml
+      POST/GET /api/query accept and return FHIR resources; the request example is a FHIR
+      Patient resource carrying the US Core profile
+      http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient, and the repository
+      describes the product as "A FHIR client allowing public health agencies to query health
+      care organizations directly or via a TEFCA QHIN".
+    domain_standard: true
+    sector: healthcare
+  - id: us-core
+    name: HL7 FHIR US Core Implementation Guide
+    conforms: true
+    evidence: >-
+      The Query Connector spec's race and ethnicity query parameters are documented as using the
+      US Core race/ethnicity SearchParameters and the CDC Race & Ethnicity code system
+      urn:oid:2.16.840.1.113883.6.238, with OMB category codes enumerated in the schema.
+    domain_standard: true
+    sector: healthcare
+  - id: hl7v2
+    name: HL7 v2 messaging
+    conforms: true
+    evidence: >-
+      Query Connector's /api/query message_format parameter enumerates [HL7, FHIR], accepting an
+      HL7v2 message in the request body. CDC also publishes an HL7 v2 structure-validation REST
+      service at CDCgov/hl7v2-processes-rest (not registered here — its own OpenAPI file carries
+      the author's note "This file was generated with Chat GPT").
+    domain_standard: true
+    sector: healthcare
+  - id: hl7-cda-ecr
+    name: HL7 CDA electronic Initial Case Report (eICR) and Reportability Response (RR)
+    conforms: true
+    evidence: >-
+      openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json is the
+      contract for the DIBBs eCR Refiner, whose stated purpose is to reduce eICR and RR documents;
+      the spec exposes /api/v1/simulator/upload and /api/v1/configurations/test over eCR payloads.
+    domain_standard: true
+    sector: healthcare
+  - id: tefca
+    name: TEFCA / QHIN query routing
+    conforms: true
+    evidence: >-
+      CDCgov/dibbs-query-connector repository description, verified 2026-09-05: "A FHIR client
+      allowing public health agencies to query health care organizations directly or via a TEFCA
+      QHIN". The fhir_server query parameter selects the target.
+    domain_standard: true
+    sector: healthcare
+  - id: soda
+    name: Socrata Open Data API (SODA) 2.1 / 3.0
+    conforms: true
+    evidence: >-
+      data.cdc.gov and chronicdata.cdc.gov are Socrata deployments serving /resource/{id}.{json|csv|geojson}
+      with SoQL ($select/$where/$order/$group/$limit/$offset/$q) and the /api/v3/views/{id}/query.json
+      v3 surface; documented at https://dev.socrata.com/docs/endpoints.html.
+  - id: geojson
+    name: GeoJSON (RFC 7946)
+    conforms: true
+    evidence: The SODA surface exposes a .geojson representation per dataset (queryDatasetGeoJson).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Probed 2026-09-05. https://data.cdc.gov/resource/zzzz-zzzz.json returns a Socrata-native
+      envelope {"code","error","message","data"} with content-type application/json, not
+      application/problem+json. tools.cdc.gov returns {"meta":{"status","message":[...]}}.
+      The DIBBs eCR Refiner returns FastAPI HTTPValidationError bodies on 422. No CDC surface
+      emits RFC 9457.
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No OAuth2 securityScheme appears in any harvested CDC spec. The Query Connector spec
+      carries a COMMENTED-OUT OAuth2 block prefixed
+      "# TODO: IMPLEMENT THIS PORTION PRIOR TO SHIPPING API" — an intention, not a contract.
+  - id: oidc
+    conforms: false
+    evidence: /.well-known/openid-configuration returned 403 or 404 on all eleven probed hosts.
+  - id: idempotency
+    conforms: false
+    evidence: No Idempotency-Key header or equivalent appears in any harvested spec or in the docs.
+  - id: pagination
+    conforms: true
+    evidence: >-
+      SODA uses $limit/$offset (https://dev.socrata.com/docs/endpoints.html); the Content
+      Syndication API uses max/pagenum/offset with a meta.pagination envelope
+      (https://tools.cdc.gov/api/docs/info.aspx).
+  - id: fapi
+    conforms: false
+  - id: scim
+    conforms: false
+  - id: odata
+    conforms: false
+compliance:
+  published_program: false
+  note: >-
+    CDC publishes no vendor-style trust center or certification page (SOC 2 / ISO 27001 / PCI).
+    As a federal agency its posture is governed by FISMA/FedRAMP through its hosting providers —
+    data.cdc.gov responses carry X-Socrata-Region: aws-us-east-1-fedramp-prod, which evidences the
+    PLATFORM's FedRAMP boundary, not a CDC-published compliance program. No `Compliance` pointer
+    is emitted on the strength of a response header.

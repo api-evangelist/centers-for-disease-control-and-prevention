@@ -1,0 +1,64 @@
+# Centers for Disease Control and Prevention
+
+> The United States' national public health agency (part of HHS). CDC publishes public,
+> anonymously-callable data APIs — the Socrata SODA portals at data.cdc.gov and
+> chronicdata.cdc.gov, the CDC WONDER XML query service, the Environmental Public Health
+> Tracking Network REST API, and the Content Syndication API at tools.cdc.gov — plus
+> open-source public-health products with their own OpenAPI contracts under the CDCgov
+> GitHub organization. Almost all CDC data is US public domain / CC0. There is no pricing,
+> no plan tier, and no first-party SDK.
+
+Generated 2026-09-05 by the API Evangelist enrichment pipeline from this repository's
+apis.yml and artifacts. CDC does not publish an llms.txt of its own — /llms.txt was probed
+on cdc.gov, www.cdc.gov, data.cdc.gov, chronicdata.cdc.gov, wonder.cdc.gov,
+ephtracking.cdc.gov and tools.cdc.gov on 2026-09-05 and returned 403 or 404 on every host.
+
+## APIs
+
+- [CDC Socrata Open Data API (data.cdc.gov)](https://data.cdc.gov/): SoQL/JSON/CSV/GeoJSON access to 1,385 CDC datasets. Base https://data.cdc.gov/resource/. Anonymous use is throttled by IP; an X-App-Token header (or $$app_token parameter) lifts the throttle.
+- [CDC Chronic Disease / PLACES portal](https://chronicdata.cdc.gov/): the same SODA interface over PLACES, BRFSS and 500 Cities small-area estimates. Base https://chronicdata.cdc.gov/resource/.
+- [CDC WONDER](https://wonder.cdc.gov/): XML-over-HTTP POST query service for mortality, natality, cancer, TB, STD and vaccine-adverse-event databases. Base https://wonder.cdc.gov/controller/datarequest/{databaseId}. Requires accept_datause_restrictions=true on every request.
+- [Environmental Public Health Tracking Network API](https://ephtracking.cdc.gov/): REST/JSON over national, state and county environmental health indicators. Base https://ephtracking.cdc.gov/apigateway/api/v1.
+- [CDC Content Syndication (Public Health Media Library)](https://tools.cdc.gov/medialibrary/): retrieve and embed CDC health content. Base https://tools.cdc.gov/api/v2/resources/.
+- [DIBBs eCR Refiner](https://github.com/CDCgov/dibbs-ecr-refiner): 44-operation OpenAPI 3.1 over eICR/RR refinement. Self-hosted container.
+- [DIBBs Query Connector](https://queryconnector.dev/): FHIR/HL7v2 query client for public health agencies, including TEFCA QHIN routing.
+
+## Specs
+
+- [SODA v2.1 OpenAPI](openapi/centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml)
+- [SODA v3 OpenAPI](openapi/centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml)
+- [DIBBs eCR Refiner OpenAPI 3.1.0 (harvested verbatim)](openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json)
+- [DIBBs Query Connector OpenAPI 3.0.3 (harvested verbatim)](openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml)
+- [DCAT-US 1.1 open data catalog, 1,385 datasets (harvested verbatim)](well-known/centers-for-disease-control-and-prevention-data-json-catalog.json)
+
+## Artifacts
+
+- [Authentication profile](authentication/centers-for-disease-control-and-prevention-authentication.yml)
+- [API conventions, idempotency and reversibility](conventions/centers-for-disease-control-and-prevention-conventions.yml)
+- [Rate limits](rate-limits/centers-for-disease-control-and-prevention-rate-limits.yml)
+- [Error catalog](errors/centers-for-disease-control-and-prevention-problem-types.yml)
+- [Lifecycle and versioning](lifecycle/centers-for-disease-control-and-prevention-lifecycle.yml)
+- [Standards conformance](conformance/centers-for-disease-control-and-prevention-conformance.yml)
+- [Packages and SDKs](packages/centers-for-disease-control-and-prevention-packages.yml)
+- [Embedded components](components/centers-for-disease-control-and-prevention-components.yml)
+- [Sandbox and test data](sandbox/centers-for-disease-control-and-prevention-sandbox.yml)
+- [Changelog](changelog/centers-for-disease-control-and-prevention-changelog.yml)
+- [Data model](data-model/centers-for-disease-control-and-prevention-data-model.yml)
+- [Agent skills](skills/_index.yml)
+- [MCP candidate manifest (no server exists)](mcp/centers-for-disease-control-and-prevention-mcp.yml)
+- [Well-known probe record (zero hits)](well-known/centers-for-disease-control-and-prevention-well-known.yml)
+
+## Docs
+
+- [Socrata SODA consumer docs](https://dev.socrata.com/consumers/getting-started.html)
+- [Socrata application tokens and throttling](https://dev.socrata.com/docs/app-tokens.html)
+- [CDC WONDER API reference](https://wonder.cdc.gov/wonder/help/wonder-api.html)
+- [Content Syndication API reference](https://tools.cdc.gov/api/docs/info.aspx)
+- [CDCgov on GitHub](https://github.com/CDCgov)
+- [DIBBs project site](https://dibbs.tools/)
+
+## Notes for agents
+
+- CDC's former developer portal open.cdc.gov has been decommissioned: it has no DNS A record as of 2026-09-05, and its source repository CDCgov/opencdc was archived 2024-03-21. Do not send users there.
+- CDC serves no /.well-known/ discovery documents and no A2A agent card on any host.
+- www.cdc.gov, cdc.gov and wonder.cdc.gov return 403 from the Akamai edge for unknown paths; that is an edge policy, not a missing page.
