@@ -3,7 +3,7 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/centers-for-disease-control-and-prevention/refs/heads/main/apis.yml
 name: Centers for Disease Control and Prevention
 tags:
-  - CDC
+  - Change Data Capture
   - Environmental Health
   - Epidemiology
   - Federal-Government
@@ -237,6 +237,12 @@ apis:
     spec declares no servers[] block and the base URL is whatever the jurisdiction deploys.
   humanURL: https://github.com/CDCgov/dibbs-ecr-refiner
   tags:
+  - ECR
+  - eICR
+  - HL7 CDA
+  - Public Health Surveillance
+  - Reportable Conditions
+  tags_raw:
   - eCR
   - eICR
   - HL7 CDA
