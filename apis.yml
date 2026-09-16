@@ -225,68 +225,252 @@ apis:
   - type: OpenAPI
     url: openapi/centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml
 - aid: >-
-    centers-for-disease-control-and-prevention:dibbs-ecr-refiner
-  name: CDC DIBBs eCR Refiner API
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-app-notifications-api
+  name: Centers for Disease Control and Prevention App Notifications API
   description: >-
-    The DIBBs eCR Refiner reduces electronic initial case report (eICR) and Reportability Response
-    (RR) documents down to the data a given reportable condition actually needs, easing storage and
-    performance pressure on eCR pipelines and disease surveillance systems. CDC publishes a
-    44-operation OpenAPI 3.1.0 contract covering conditions, configurations, custom code sets,
-    section processing, an audit event log and an eCR simulator. The product is self-hosted: public
-    health jurisdictions run the Apache-2.0 container from ghcr.io/cdcgov/dibbs-ecr-refiner, so the
-    spec declares no servers[] block and the base URL is whatever the jurisdiction deploys.
-  humanURL: https://github.com/CDCgov/dibbs-ecr-refiner
+    The app-notifications API from Centers for Disease Control and Prevention — 1 operation(s) for app-notifications.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
   tags:
-  - ECR
-  - eICR
-  - HL7 CDA
-  - Public Health Surveillance
-  - Reportable Conditions
-  tags_raw:
-  - eCR
-  - eICR
-  - HL7 CDA
-  - Public Health Surveillance
-  - Reportable Conditions
+  - app-notifications
   properties:
   - type: OpenAPI
-    url: openapi/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json
+    url: openapi/centers-for-disease-control-and-prevention-app-notifications-api-openapi.yml
   - type: SourceCode
     url: https://github.com/CDCgov/dibbs-ecr-refiner
   - type: ChangeLog
     url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
-  - type: Overlay
-    url: overlays/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-overlay.yaml
-- aid: >-
-    centers-for-disease-control-and-prevention:dibbs-query-connector
-  name: CDC DIBBs Query Connector API
-  description: >-
-    The DIBBs Query Connector is a FHIR client that lets public health agencies query health care
-    organizations directly or through a TEFCA QHIN. Its published OpenAPI 3.0.3 contract exposes a
-    health check and a query endpoint that accepts either a FHIR R4 patient resource or an HL7 v2
-    message, with US Core race and ethnicity search parameters drawn from the CDC Race and Ethnicity
-    code system. CDC runs a demo instance tracking the latest release and a dev instance tracking
-    main; the product itself is self-hosted and CC0.
-  humanURL: https://queryconnector.dev/
-  baseURL: https://connector.dibbs.tools
-  tags:
-  - FHIR
-  - HL7v2
-  - Interoperability
-  - Public Health Surveillance
-  - TEFCA
-  properties:
-  - type: OpenAPI
-    url: openapi/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml
   - type: SourceCode
     url: https://github.com/CDCgov/dibbs-query-connector
   - type: ChangeLog
     url: https://github.com/CDCgov/dibbs-query-connector/releases
   - type: Sandbox
     url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-code-systems-api
+  name: Centers for Disease Control and Prevention Code Systems API
+  description: >-
+    The code-systems API from Centers for Disease Control and Prevention — 1 operation(s) for code-systems.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - code-systems
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-code-systems-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-conditions-api
+  name: Centers for Disease Control and Prevention Conditions API
+  description: >-
+    The conditions API from Centers for Disease Control and Prevention — 2 operation(s) for conditions.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - conditions
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-conditions-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-configurations-api
+  name: Centers for Disease Control and Prevention Configurations API
+  description: >-
+    The configurations API from Centers for Disease Control and Prevention — 22 operation(s) for configurations.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - configurations
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-configurations-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-events-api
+  name: Centers for Disease Control and Prevention Events API
+  description: >-
+    The events API from Centers for Disease Control and Prevention — 4 operation(s) for events.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - events
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-events-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-query-api
+  name: Centers for Disease Control and Prevention Query API
+  description: >-
+    The Query API from Centers for Disease Control and Prevention — 1 operation(s) for query.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - Query
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-query-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-query-connector-api-openapi-3-0-api
+  name: Centers for Disease Control and Prevention Query Connector API OpenAPI 3.0 API
+  description: >-
+    The Query Connector API OpenAPI 3.0 API from Centers for Disease Control and Prevention — 1 operation(s)
+    for query connector api openapi 3.0.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - Query Connector API OpenAPI 3.0
+  properties:
+  - type: OpenAPI
+    url: >-
+      openapi/centers-for-disease-control-and-prevention-query-connector-api-openapi-3-0-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-releases-api
+  name: Centers for Disease Control and Prevention Releases API
+  description: >-
+    The releases API from Centers for Disease Control and Prevention — 1 operation(s) for releases.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - releases
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-releases-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-simulator-api
+  name: Centers for Disease Control and Prevention Simulator API
+  description: >-
+    The simulator API from Centers for Disease Control and Prevention — 3 operation(s) for simulator.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - simulator
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-simulator-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-tes-api
+  name: Centers for Disease Control and Prevention Tes API
+  description: The tes API from Centers for Disease Control and Prevention — 4 operation(s) for tes.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - tes
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-tes-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+- aid: >-
+    centers-for-disease-control-and-prevention:centers-for-disease-control-and-prevention-user-api
+  name: Centers for Disease Control and Prevention User API
+  description: The user API from Centers for Disease Control and Prevention — 1 operation(s) for user.
+  humanURL: https://data.cdc.gov/
+  baseURL: https://data.cdc.gov/resource/
+  tags:
+  - user
+  properties:
+  - type: OpenAPI
+    url: openapi/centers-for-disease-control-and-prevention-user-api-openapi.yml
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-ecr-refiner
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-ecr-refiner/releases
+  - type: SourceCode
+    url: https://github.com/CDCgov/dibbs-query-connector
+  - type: ChangeLog
+    url: https://github.com/CDCgov/dibbs-query-connector/releases
+  - type: Sandbox
+    url: https://connector.dibbs.tools
+common:
+  - type: Overlay
+    url: overlays/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-overlay.yaml
   - type: Overlay
     url: overlays/centers-for-disease-control-and-prevention-dibbs-query-connector-overlay.yaml
-common:
   - type: AgenticAccess
     url: agentic-access/centers-for-disease-control-and-prevention-agentic-access.yml
   - type: DomainSecurity
