@@ -1,0 +1,272 @@
+openapi: 3.2.0
+info:
+  title: DIBBs eCR Refiner Conditions API
+  description: 'Please visit the repo for more info: https://github.com/CDCgov/dibbs-ecr-refiner'
+  version: 1.0.0
+tags:
+- name: Conditions
+paths:
+  /api/v1/conditions/:
+    get:
+      tags:
+      - Conditions
+      summary: Get Conditions
+      description: 'Fetches a summary of all available conditions from the database and returns them as a list.
+
+
+        Args:
+
+        db (AsyncDatabaseConnection): Database connection.
+
+
+        Returns:
+
+        list[GetConditionsResponse]: List of all condition summaries.'
+      operationId: getConditions
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/GetConditionsResponse'
+                type: array
+                title: Response Getconditions
+  /api/v1/conditions/{condition_id}:
+    get:
+      tags:
+      - Conditions
+      summary: Get Condition
+      description: 'Returns information about a given condition.
+
+
+        Args:
+
+        condition_id (UUID): ID of the condition
+
+        db (AsyncDatabaseConnection): Database connection.
+
+
+        Raises:
+
+        HTTPException: 404 if no condition is found
+
+
+        Returns:
+
+        GetCondition: Info about the condition'
+      operationId: getCondition
+      parameters:
+      - name: condition_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Condition Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConditionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DbCode:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+        system_id:
+          type: string
+          format: uuid
+          title: System Id
+        system_name:
+          type: string
+          title: System Name
+      type: object
+      required:
+      - code
+      - display
+      - system_id
+      - system_name
+      title: DbCode
+      description: Model for all coded information stored in the codes table.
+    CodedConcept:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+      type: object
+      required:
+      - code
+      - display
+      title: CodedConcept
+      description: Code / display name minimal representation of a codeable concept.
+    CodeSetStatus:
+      type: string
+      enum:
+      - not expanded
+      - partially complete
+      - fully complete
+    GetConditionResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        display_name:
+          type: string
+          title: Display Name
+        completeness_status:
+          $ref: '#/components/schemas/CompletenessStatus'
+        codes:
+          items:
+            $ref: '#/components/schemas/DbCode'
+          type: array
+          title: Codes
+        systems:
+          items:
+            $ref: '#/components/schemas/CodeSystemsReponse'
+          type: array
+          title: Systems
+      type: object
+      required:
+      - id
+      - display_name
+      - completeness_status
+      - codes
+      - systems
+      title: GetConditionResponse
+      description: Condition response model.
+    CodeCategoryStatus:
+      type: string
+      enum:
+      - not included
+      - partially complete
+      - fully complete
+    CodeSystemsReponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        key:
+          type: string
+          title: Key
+        display_name:
+          type: string
+          title: Display Name
+        oid:
+          type: string
+          title: Oid
+      type: object
+      required:
+      - id
+      - key
+      - display_name
+      - oid
+      title: CodeSystemsReponse
+      description: Display information needed for code system information on the frontend.
+    GetConditionsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        display_name:
+          type: string
+          title: Display Name
+        rsg_codes:
+          items:
+            $ref: '#/components/schemas/CodedConcept'
+          type: array
+          title: Rsg Codes
+      type: object
+      required:
+      - id
+      - display_name
+      - rsg_codes
+      title: GetConditionsResponse
+      description: Conditions response model.
+    CodeCategoryCompletenessStatus:
+      properties:
+        category:
+          type: string
+          title: Category
+        name:
+          type: string
+          title: Name
+        completeness:
+          $ref: '#/components/schemas/CodeCategoryStatus'
+      type: object
+      required:
+      - category
+      - name
+      - completeness
+      title: CodeCategoryCompletenessStatus
+      description: Code category completeness status model.
+    CompletenessStatus:
+      properties:
+        code_set_status:
+          $ref: '#/components/schemas/CodeSetStatus'
+        code_category_statuses:
+          items:
+            $ref: '#/components/schemas/CodeCategoryCompletenessStatus'
+          type: array
+          title: Code Category Statuses
+      type: object
+      required:
+      - code_set_status
+      - code_category_statuses
+      title: CompletenessStatus
+      description: Condition completeness status model.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

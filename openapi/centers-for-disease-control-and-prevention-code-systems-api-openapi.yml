@@ -1,0 +1,55 @@
+openapi: 3.2.0
+info:
+  title: DIBBs eCR Refiner Code Systems API
+  description: 'Please visit the repo for more info: https://github.com/CDCgov/dibbs-ecr-refiner'
+  version: 1.0.0
+tags:
+- name: code systems
+paths:
+  /api/v1/code-systems/:
+    get:
+      tags:
+      - code systems
+      summary: Get Code Systems
+      description: 'Returns a list of supported code systems.
+
+
+        Returns:
+
+        List of code system.'
+      operationId: getCodeSystems
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CodeSystemsReponse'
+                type: array
+                title: Response Getcodesystems
+components:
+  schemas:
+    CodeSystemsReponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        key:
+          type: string
+          title: Key
+        display_name:
+          type: string
+          title: Display Name
+        oid:
+          type: string
+          title: Oid
+      type: object
+      required:
+      - id
+      - key
+      - display_name
+      - oid
+      title: CodeSystemsReponse
+      description: Display information needed for code system information on the frontend.

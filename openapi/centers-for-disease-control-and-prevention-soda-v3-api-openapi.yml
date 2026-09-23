@@ -1,25 +1,9 @@
 openapi: 3.2.0
 info:
-  title: CDC Socrata Open Data API (data.cdc.gov) SODA v2.1 SODA v3 API
+  title: CDC Socrata Open Data API (data.cdc.gov) SODA v3 API
   description: 'REST/JSON access to hundreds of CDC datasets published on data.cdc.gov via
 
-    the Socrata SODA (Socrata Open Data API) platform. Each dataset is
-
-    addressed by an eight-character dataset identifier and supports filtering,
-
-    aggregation, and pagination through SoQL query parameters. Anonymous use
-
-    is allowed at throttled rates; an application token (passed via the
-
-    X-App-Token header or $$app_token query parameter) raises limits. SODA v3
-
-    additionally supports authenticated user requests for non-public datasets.
-
-    Generated as a best-effort spec from public Socrata documentation; verify
-
-    against https://dev.socrata.com/docs/endpoints.html before production use.
-
-    '
+    the Socrata SODA (Socrata Open Data API) platform.'
   version: '2.1'
   contact:
     name: CDC Open Data
@@ -135,6 +119,22 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
 components:
+  responses:
+    Error:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+              error:
+                type: boolean
+              message:
+                type: string
+              data:
+                type: object
   parameters:
     AppTokenQuery:
       in: query
@@ -157,22 +157,6 @@ components:
         pattern: ^[a-z0-9]{4}-[a-z0-9]{4}$
         example: vbim-akqf
       description: Eight-character dataset identifier (four-four with a dash).
-  responses:
-    Error:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              code:
-                type: string
-              error:
-                type: boolean
-              message:
-                type: string
-              data:
-                type: object
   securitySchemes:
     appToken:
       type: apiKey

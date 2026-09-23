@@ -1,0 +1,308 @@
+openapi: 3.2.0
+info:
+  title: DIBBs eCR Refiner Tes API
+  description: 'Please visit the repo for more info: https://github.com/CDCgov/dibbs-ecr-refiner'
+  version: 1.0.0
+tags:
+- name: tes
+paths:
+  /api/v1/tes/diff-details:
+    get:
+      tags:
+      - tes
+      summary: Get Tes Updates
+      description: 'Returns a list of all TES updates, ordered from newest to oldest.
+
+
+        Args:
+
+        db (AsyncDatabaseConnection): Database connection.
+
+
+        Returns:
+
+        TesResponse: A bundle with a list of TesUpdates, including
+
+        - The version
+
+        - The when it was created'
+      operationId: getTesUpdates
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TesResponse'
+  /api/v1/tes/:
+    get:
+      tags:
+      - tes
+      summary: Get Tes Diff Details
+      description: 'Returns a list of all TES updates, ordered from newest to oldest.
+
+
+        Args:
+
+        cur_version: Version to compare on.
+
+        prev_version: Version to compare against. Potentially an empty string if we''re in the "baseline" TES version
+
+        db (AsyncDatabaseConnection): Database connection.
+
+
+        Returns:
+
+        list[TesDiffResponse]: A bundle with a list of TesDiffResponse, including
+
+        - The condition metadata across the versions
+
+        - The number of added and removed codes'
+      operationId: getTesDiffDetails
+      parameters:
+      - name: cur_version
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Cur Version
+      - name: prev_version
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Prev Version
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TesDiffConditionDetails'
+                title: Response Gettesdiffdetails
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/tes/export:
+    get:
+      tags:
+      - tes
+      summary: Export Tes Condition Diff
+      description: 'Generates and exports a CSV of condition diffs between specified TES versions.
+
+
+        Args:
+
+        cur_version(str) : The ceiling TES version to compare against
+
+        prev_version(str) : The floor TES version to compare against
+
+        canonical_url(str) : The condition diff being requested
+
+        db (AsyncDatabaseConnection) : The db connection.
+
+
+        Returns:
+
+        Response: an HTTP response that gives the browser a CSV file to download'
+      operationId: exportConditionDiff
+      parameters:
+      - name: cur_version
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Cur Version
+      - name: prev_version
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Prev Version
+      - name: canonical_url
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Canonical Url
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/tes/configurations-to-update:
+    get:
+      tags:
+      - tes
+      summary: Get Configurations To Update
+      description: 'Collects information needed to render the TES configs that need updating for a given TES release.
+
+
+        Args:
+
+        db (AsyncDatabaseConnection) : The db connection.
+
+
+        Returns:
+
+        TesConfigsToUpdateResponse: information about TES configs to update,
+
+        with a list of existing drafts and drafts to create'
+      operationId: getConfigurationsToUpdate
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TesConfigsToUpdateResponse'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    TesConfigToUpdate:
+      properties:
+        configuration_id:
+          type: string
+          format: uuid
+          title: Configuration Id
+        configuration_name:
+          type: string
+          title: Configuration Name
+        codesets_to_update:
+          items:
+            type: string
+          type: array
+          title: Codesets To Update
+        configuration_tes_version:
+          type: string
+          title: Configuration Tes Version
+      type: object
+      required:
+      - configuration_id
+      - configuration_name
+      - codesets_to_update
+      - configuration_tes_version
+      title: TesConfigToUpdate
+      description: A configuration to update with new TES codes.
+    TesUpdate:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        version:
+          type: string
+          title: Version
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - version
+      - created_at
+      title: TesUpdate
+      description: All metadata for a TES update needed for the frontend.
+    TesDiffConditionDetails:
+      properties:
+        canonical_url:
+          type: string
+          title: Canonical Url
+        display_name:
+          type: string
+          title: Display Name
+        added_code_total:
+          type: integer
+          title: Added Code Total
+        removed_code_total:
+          type: integer
+          title: Removed Code Total
+        is_new:
+          type: boolean
+          title: Is New
+      type: object
+      required:
+      - canonical_url
+      - display_name
+      - added_code_total
+      - removed_code_total
+      - is_new
+      title: TesDiffConditionDetails
+      description: A condition within a TES diff, with details for the diff page to display.
+    TesConfigsToUpdateResponse:
+      properties:
+        existing_drafts:
+          items:
+            $ref: '#/components/schemas/TesConfigToUpdate'
+          type: array
+          title: Existing Drafts
+        drafts_to_create:
+          items:
+            $ref: '#/components/schemas/TesConfigToUpdate'
+          type: array
+          title: Drafts To Create
+      type: object
+      required:
+      - existing_drafts
+      - drafts_to_create
+      title: TesConfigsToUpdateResponse
+      description: The response needed for rendering of the TES update configuration page.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TesResponse:
+      properties:
+        tes_updates:
+          items:
+            $ref: '#/components/schemas/TesUpdate'
+          type: array
+          title: Tes Updates
+      type: object
+      required:
+      - tes_updates
+      title: TesResponse
+      description: Response needed for the TES updates page.

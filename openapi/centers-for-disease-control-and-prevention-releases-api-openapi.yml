@@ -1,0 +1,92 @@
+openapi: 3.2.0
+info:
+  title: DIBBs eCR Refiner Releases API
+  description: 'Please visit the repo for more info: https://github.com/CDCgov/dibbs-ecr-refiner'
+  version: 1.0.0
+tags:
+- name: Releases
+paths:
+  /api/v1/releases/:
+    get:
+      tags:
+      - Releases
+      summary: Get Releases Data
+      description: 'Hook to get release data from GitHub and serve it to the frontend.
+
+
+        Returns:
+
+        ReleasesResponse: Reponse of release information in a list of ReleaseMetadata'
+      operationId: getReleases
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReleasesResponse'
+components:
+  schemas:
+    Release:
+      properties:
+        id:
+          type: string
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        name:
+          type: string
+          title: Name
+        release_notes:
+          items:
+            $ref: '#/components/schemas/ReleaseNotes'
+          type: array
+          title: Release Notes
+        prerelease:
+          type: boolean
+          title: Prerelease
+        url:
+          type: string
+          title: Url
+      type: object
+      required:
+      - id
+      - created_at
+      - name
+      - release_notes
+      - prerelease
+      - url
+      title: Release
+      description: Type for release information sent to the frontend.
+    ReleasesResponse:
+      properties:
+        releases:
+          items:
+            $ref: '#/components/schemas/Release'
+          type: array
+          title: Releases
+      type: object
+      required:
+      - releases
+      title: ReleasesResponse
+      description: Response for releases as returned through the GitHub API.
+    ReleaseNotes:
+      properties:
+        id:
+          type: string
+          title: Id
+        header:
+          type: string
+          title: Header
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - id
+      - header
+      - content
+      title: ReleaseNotes
+      description: Content of a release note from GitHub.

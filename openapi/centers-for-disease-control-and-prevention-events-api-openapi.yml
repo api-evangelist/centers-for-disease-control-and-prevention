@@ -1,0 +1,335 @@
+openapi: 3.2.0
+info:
+  title: DIBBs eCR Refiner Events API
+  description: 'Please visit the repo for more info: https://github.com/CDCgov/dibbs-ecr-refiner'
+  version: 1.0.0
+tags:
+- name: Events
+paths:
+  /api/v1/events/:
+    get:
+      tags:
+      - Events
+      summary: Get Events
+      description: 'Returns a list of all events for a jurisdiction, ordered from newest to oldest.
+
+
+        Args:
+
+        user (DbUser): The user making the request.
+
+        db (AsyncDatabaseConnection): Database connection.
+
+        logger (Logger): Standard logger.
+
+        page (int): page of events to return to the client.
+
+        canonical_url (str | None): An optional filter on the condition.
+
+
+        Returns:
+
+        EventResponse: A bundle with
+
+        - Total page count
+
+        - The list of AuditEvents relevant for the (optional) filter
+
+        - The list of condition information with potentially filter-able data'
+      operationId: getEvents
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: canonical_url
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Canonical Url
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/events/{event_id}/custom-code-uploads:
+    get:
+      tags:
+      - Events
+      summary: Get Custom Code Upload Events
+      description: 'Returns a list of all custom code upload events associated with a parent event ID.
+
+
+        Args:
+
+        event_id (UUID): The parent event
+
+        user (DbUser): The logged in user
+
+        db (AsyncDatabaseConnection): The database connection
+
+
+        Raises:
+
+        HTTPException: 404 if event with requested ID is not found or does not belong to user''s jurisdiction'
+      operationId: getCustomCodeUploadEvents
+      parameters:
+      - name: event_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Event Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomCodeUploadEventResponse'
+                title: Response Getcustomcodeuploadevents
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/events/export:
+    get:
+      tags:
+      - Events
+      summary: Get Events Export
+      description: 'Generate a CSV export of all events within a jurisdiction.
+
+
+        Args:
+
+        timezone (str): The user''s IANA timezone
+
+        user (DbUser): The logged-in user
+
+        db (AsyncDatabaseConnection): The database connection
+
+        canonical_url (str | None): An optional canonical URL to filter the export by condition
+
+
+        Returns:
+
+        Response: The generated CSV file'
+      operationId: get_events_export_api_v1_events_export_get
+      parameters:
+      - name: canonical_url
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Canonical Url
+      - name: timezone
+        in: query
+        required: false
+        schema:
+          type: string
+          default: UTC
+          title: Timezone
+      responses:
+        '200':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/events/{event_id}/codes/export:
+    get:
+      tags:
+      - Events
+      summary: Get Event Codes Export
+      description: Exports the historical condition codes associated with a code-set event.
+      operationId: get_event_codes_export_api_v1_events__event_id__codes_export_get
+      parameters:
+      - name: event_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Event Id
+      responses:
+        '200':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AuditEvent:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        username:
+          type: string
+          title: Username
+        configuration_name:
+          type: string
+          title: Configuration Name
+        configuration_version:
+          type: integer
+          title: Configuration Version
+        condition_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Condition Id
+        action_text:
+          type: string
+          title: Action Text
+        code_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Code Count
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        has_custom_code_upload_events:
+          type: boolean
+          title: Has Custom Code Upload Events
+      type: object
+      required:
+      - id
+      - username
+      - configuration_name
+      - configuration_version
+      - condition_id
+      - action_text
+      - code_count
+      - created_at
+      - has_custom_code_upload_events
+      title: AuditEvent
+      description: An event returned by the DB function.
+    CustomCodeUploadEventResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        system_display_name:
+          type: string
+          title: System Display Name
+        code:
+          type: string
+          title: Code
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - system_display_name
+      - code
+      - name
+      title: CustomCodeUploadEventResponse
+      description: Response model for a custom code upload event.
+    EventFilterOption:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        canonical_url:
+          type: string
+          title: Canonical Url
+      type: object
+      required:
+      - id
+      - name
+      - canonical_url
+      title: EventFilterOption
+      description: Conditions returned to the user to be used for filtering events.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    EventsResponse:
+      properties:
+        audit_events:
+          items:
+            $ref: '#/components/schemas/AuditEvent'
+          type: array
+          title: Audit Events
+        configuration_options:
+          items:
+            $ref: '#/components/schemas/EventFilterOption'
+          type: array
+          title: Configuration Options
+        total_pages:
+          type: integer
+          title: Total Pages
+      type: object
+      required:
+      - audit_events
+      - configuration_options
+      - total_pages
+      title: EventsResponse
+      description: Response needed for the audit log page.

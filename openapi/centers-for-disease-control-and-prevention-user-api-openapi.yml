@@ -1,0 +1,83 @@
+openapi: 3.2.0
+info:
+  title: DIBBs eCR Refiner User API
+  description: 'Please visit the repo for more info: https://github.com/CDCgov/dibbs-ecr-refiner'
+  version: 1.0.0
+tags:
+- name: User
+paths:
+  /api/user:
+    get:
+      tags:
+      - User
+      summary: Get User
+      description: 'Returns the current logged-in user''s information.
+
+
+        Reads user info from the session or token.
+
+
+        Returns:
+
+        JSON object with user claims if authenticated.
+
+
+        Raises:
+
+        HTTPException 401 if user not authenticated.'
+      operationId: getUser
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/UserResponse'
+                - type: 'null'
+                title: Response Getuser
+components:
+  schemas:
+    NotificationKeys:
+      type: string
+      enum:
+      - most_recent_app_update
+      - most_recent_tes_update
+      title: NotificationKeys
+      description: Enum class to type the values of the notifications possible for actioning on the frontend.
+    NotificationsToRender:
+      properties:
+        to_render:
+          additionalProperties:
+            type: boolean
+          propertyNames:
+            $ref: '#/components/schemas/NotificationKeys'
+          type: object
+          title: To Render
+      type: object
+      required:
+      - to_render
+      title: NotificationsToRender
+      description: Map of booleans for each of the notificaiton keys as to whether to render frontend banners.
+    UserResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        username:
+          type: string
+          title: Username
+        jurisdiction_id:
+          type: string
+          title: Jurisdiction Id
+        notifications:
+          $ref: '#/components/schemas/NotificationsToRender'
+      type: object
+      required:
+      - id
+      - username
+      - jurisdiction_id
+      - notifications
+      title: UserResponse
+      description: User information to send to the client.

@@ -3,23 +3,7 @@ info:
   title: CDC Socrata Open Data API (data.cdc.gov) SODA v2.1 API
   description: 'REST/JSON access to hundreds of CDC datasets published on data.cdc.gov via
 
-    the Socrata SODA (Socrata Open Data API) platform. Each dataset is
-
-    addressed by an eight-character dataset identifier and supports filtering,
-
-    aggregation, and pagination through SoQL query parameters. Anonymous use
-
-    is allowed at throttled rates; an application token (passed via the
-
-    X-App-Token header or $$app_token query parameter) raises limits. SODA v3
-
-    additionally supports authenticated user requests for non-public datasets.
-
-    Generated as a best-effort spec from public Socrata documentation; verify
-
-    against https://dev.socrata.com/docs/endpoints.html before production use.
-
-    '
+    the Socrata SODA (Socrata Open Data API) platform.'
   version: '2.1'
   contact:
     name: CDC Open Data
@@ -46,9 +30,7 @@ paths:
       summary: Query a dataset (JSON)
       description: 'Returns rows from a dataset as JSON. Supports SoQL via $select,
 
-        $where, $order, $group, $limit, $offset, and $q parameters.
-
-        '
+        $where, $order, $group, $limit, $offset, and $q parameters.'
       operationId: queryDatasetJson
       parameters:
       - $ref: '#/components/parameters/DatasetId'
@@ -135,6 +117,79 @@ paths:
         '404':
           $ref: '#/components/responses/Error'
 components:
+  parameters:
+    FullTextSearch:
+      in: query
+      name: $q
+      schema:
+        type: string
+      description: Full-text search across the dataset.
+    Having:
+      in: query
+      name: $having
+      schema:
+        type: string
+      description: Post-grouping filter (SoQL HAVING clause).
+    Group:
+      in: query
+      name: $group
+      schema:
+        type: string
+      description: Grouping (SoQL GROUP BY clause).
+    AppTokenQuery:
+      in: query
+      name: $$app_token
+      schema:
+        type: string
+      description: Socrata application token (alternative to X-App-Token header).
+    Offset:
+      in: query
+      name: $offset
+      schema:
+        type: integer
+        default: 0
+      description: Row offset for pagination.
+    Order:
+      in: query
+      name: $order
+      schema:
+        type: string
+      description: Ordering (SoQL ORDER BY clause).
+    Limit:
+      in: query
+      name: $limit
+      schema:
+        type: integer
+        default: 1000
+        maximum: 50000
+      description: Maximum rows to return.
+    DatasetId:
+      in: path
+      name: dataset_id
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-z0-9]{4}-[a-z0-9]{4}$
+        example: vbim-akqf
+      description: Eight-character dataset identifier (four-four with a dash).
+    Query:
+      in: query
+      name: $query
+      schema:
+        type: string
+      description: Full SoQL query, overriding individual $select/$where/etc.
+    Where:
+      in: query
+      name: $where
+      schema:
+        type: string
+      description: Row filter (SoQL WHERE clause).
+    Select:
+      in: query
+      name: $select
+      schema:
+        type: string
+      description: Columns to return (SoQL SELECT clause).
   responses:
     Error:
       description: Error response.
@@ -151,79 +206,6 @@ components:
                 type: string
               data:
                 type: object
-  parameters:
-    Query:
-      in: query
-      name: $query
-      schema:
-        type: string
-      description: Full SoQL query, overriding individual $select/$where/etc.
-    FullTextSearch:
-      in: query
-      name: $q
-      schema:
-        type: string
-      description: Full-text search across the dataset.
-    Where:
-      in: query
-      name: $where
-      schema:
-        type: string
-      description: Row filter (SoQL WHERE clause).
-    Order:
-      in: query
-      name: $order
-      schema:
-        type: string
-      description: Ordering (SoQL ORDER BY clause).
-    Select:
-      in: query
-      name: $select
-      schema:
-        type: string
-      description: Columns to return (SoQL SELECT clause).
-    DatasetId:
-      in: path
-      name: dataset_id
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-z0-9]{4}-[a-z0-9]{4}$
-        example: vbim-akqf
-      description: Eight-character dataset identifier (four-four with a dash).
-    Having:
-      in: query
-      name: $having
-      schema:
-        type: string
-      description: Post-grouping filter (SoQL HAVING clause).
-    Limit:
-      in: query
-      name: $limit
-      schema:
-        type: integer
-        default: 1000
-        maximum: 50000
-      description: Maximum rows to return.
-    AppTokenQuery:
-      in: query
-      name: $$app_token
-      schema:
-        type: string
-      description: Socrata application token (alternative to X-App-Token header).
-    Group:
-      in: query
-      name: $group
-      schema:
-        type: string
-      description: Grouping (SoQL GROUP BY clause).
-    Offset:
-      in: query
-      name: $offset
-      schema:
-        type: integer
-        default: 0
-      description: Row offset for pagination.
   securitySchemes:
     appToken:
       type: apiKey

@@ -1,10 +1,22 @@
 {
   "provider": "centers-for-disease-control-and-prevention",
   "sources": [
-    "centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml",
-    "centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml"
+    "_original/centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json",
+    "_original/centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml",
+    "_original/centers-for-disease-control-and-prevention-openapi.yml"
   ],
   "outputs": [
+    "centers-for-disease-control-and-prevention-app-notifications-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-code-systems-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-conditions-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-configurations-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-events-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-releases-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-simulator-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-tes-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-user-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-query-api-openapi.yml",
+    "centers-for-disease-control-and-prevention-query-connector-api-openapi-3-0-api-openapi.yml",
     "centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml",
     "centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml"
   ],
@@ -12,9 +24,39 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: app-notifications",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: code-systems",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: conditions",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: configurations",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: events",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: releases",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: simulator",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: tes",
+    "centers-for-disease-control-and-prevention-dibbs-ecr-refiner-openapi.json: declared missing tag: user",
+    "centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml: tagged paths GET /api -> Query Connector API OpenAPI 3.0",
+    "centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml: tagged paths POST /api/query -> Query",
+    "centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml: tagged paths GET /api/query -> Query",
+    "centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml: declared missing tag: Query",
+    "centers-for-disease-control-and-prevention-dibbs-query-connector-openapi.yaml: declared missing tag: Query Connector API OpenAPI 3.0",
+    "centers-for-disease-control-and-prevention-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "centers-for-disease-control-and-prevention-app-notifications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-code-systems-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-conditions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-configurations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-query-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-query-connector-api-openapi-3-0-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-releases-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-simulator-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-soda-v2-1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-soda-v3-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-tes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "centers-for-disease-control-and-prevention-user-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

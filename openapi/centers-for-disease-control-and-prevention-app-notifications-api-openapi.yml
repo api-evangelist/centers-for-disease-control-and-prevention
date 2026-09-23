@@ -1,0 +1,123 @@
+openapi: 3.2.0
+info:
+  title: DIBBs eCR Refiner App Notifications API
+  description: 'Please visit the repo for more info: https://github.com/CDCgov/dibbs-ecr-refiner'
+  version: 1.0.0
+tags:
+- name: app-notifications
+paths:
+  /api/v1/notifications:
+    patch:
+      tags:
+      - app-notifications
+      summary: Update User Notifications
+      description: Updates notification acknowledgement state for the current user.
+      operationId: updateUserNotifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserNotificationsRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UpdateUserNotificationsRequest:
+      properties:
+        key:
+          $ref: '#/components/schemas/NotificationKeys'
+      type: object
+      required:
+      - key
+      title: UpdateUserNotificationsRequest
+      description: Request to update notification acknowledgement state for the current user.
+    NotificationKeys:
+      type: string
+      enum:
+      - most_recent_app_update
+      - most_recent_tes_update
+      title: NotificationKeys
+      description: Enum class to type the values of the notifications possible for actioning on the frontend.
+    NotificationsToRender:
+      properties:
+        to_render:
+          additionalProperties:
+            type: boolean
+          propertyNames:
+            $ref: '#/components/schemas/NotificationKeys'
+          type: object
+          title: To Render
+      type: object
+      required:
+      - to_render
+      title: NotificationsToRender
+      description: Map of booleans for each of the notificaiton keys as to whether to render frontend banners.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    UserResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        username:
+          type: string
+          title: Username
+        jurisdiction_id:
+          type: string
+          title: Jurisdiction Id
+        notifications:
+          $ref: '#/components/schemas/NotificationsToRender'
+      type: object
+      required:
+      - id
+      - username
+      - jurisdiction_id
+      - notifications
+      title: UserResponse
+      description: User information to send to the client.

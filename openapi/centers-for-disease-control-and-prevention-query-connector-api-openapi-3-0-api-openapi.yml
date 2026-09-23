@@ -1,0 +1,19 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Query Connector API - OpenAPI 3.0 Query Connector API…
+tags:
+- name: Query Connector API OpenAPI 3.0
+paths:
+  /api:
+    get:
+      description: Returns the health status of the API
+      responses:
+        200:
+          description: Health check for Query Connector
+      tags:
+      - Query Connector API OpenAPI 3.0
+      summary: Get api
+      x-summary-source: derived
+      operationId: getApi
+      x-operation-id-source: derived
