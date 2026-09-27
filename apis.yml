@@ -3,18 +3,6 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/centers-for-disease-control-and-prevention/refs/heads/main/apis.yml
 name: Centers for Disease Control and Prevention
 tags:
-  - Change Data Capture
-  - Environmental Health
-  - Epidemiology
-  - Federal-Government
-  - Healthcare
-  - Open Data
-  - Public Health
-  - Socrata
-  - Surveillance
-  - WONDER
-tags_raw:
-  - CDC
   - Environmental Health
   - Epidemiology
   - Federal Government
@@ -24,18 +12,34 @@ tags_raw:
   - Socrata
   - Surveillance
   - WONDER
+tags_raw:
+  - Environmental Health
+  - Epidemiology
+  - Federal Government
+  - Healthcare
+  - Open Data
+  - Public Health
+  - Socrata
+  - Surveillance
+  - WONDER
+  - Federal-Government
 type: Index
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - cdcgov/dibbs-ecr-refiner
+    - cdcgov/dibbs-query-connector
+  open_source: unknown
   commercial: true
   callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: freemium

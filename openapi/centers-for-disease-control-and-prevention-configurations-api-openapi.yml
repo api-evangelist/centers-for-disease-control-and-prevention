@@ -1475,6 +1475,361 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ConfigurationTestResponse:
+      properties:
+        original_eicr:
+          type: string
+          title: Original Eicr
+        refined_download_key:
+          type: string
+          title: Refined Download Key
+        condition:
+          $ref: '#/components/schemas/Condition'
+      type: object
+      required:
+      - original_eicr
+      - refined_download_key
+      - condition
+      title: ConfigurationTestResponse
+      description: Model to represent the response provided to the client when in-line testing is run.
+    AssociateCodesetResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        included_conditions:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Included Conditions
+        condition_name:
+          type: string
+          title: Condition Name
+      type: object
+      required:
+      - id
+      - included_conditions
+      - condition_name
+      title: AssociateCodesetResponse
+      description: Response from adding a code set to a config.
+    AddCustomCodeInput:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+        system_id:
+          type: string
+          format: uuid
+          title: System Id
+      type: object
+      required:
+      - code
+      - display
+      - system_id
+      title: AddCustomCodeInput
+      description: Input model for adding a custom code to a configuration.
+    CodeCountsResponse:
+      properties:
+        total_code_count:
+          type: integer
+          title: Total Code Count
+        total_code_sets_count:
+          type: integer
+          title: Total Code Sets Count
+        total_excluded_codes_count:
+          type: integer
+          title: Total Excluded Codes Count
+        total_custom_codes_count:
+          type: integer
+          title: Total Custom Codes Count
+        primary_condition_rctc_count:
+          type: integer
+          title: Primary Condition Rctc Count
+      type: object
+      required:
+      - total_code_count
+      - total_code_sets_count
+      - total_excluded_codes_count
+      - total_custom_codes_count
+      - primary_condition_rctc_count
+      title: CodeCountsResponse
+      description: Code count information to return to the client.
+    LockedByUser:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        email:
+          type: string
+          title: Email
+      type: object
+      required:
+      - id
+      - name
+      - email
+      title: LockedByUser
+      description: LockedByUser response to provide user information.
+    SerializedFile:
+      properties:
+        key:
+          type: string
+          title: Key
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - key
+      - content
+      title: SerializedFile
+      description: An individual serialized file.
+    UpdateSectionProcessingResponse:
+      properties:
+        section_updated_code:
+          type: string
+          title: Section Updated Code
+        disabled_section:
+          items:
+            $ref: '#/components/schemas/DisabledSection'
+          type: array
+          title: Disabled Section
+        narrative_only_section:
+          items:
+            $ref: '#/components/schemas/NarrativeOnlySection'
+          type: array
+          title: Narrative Only Section
+        reconstructable_section:
+          items:
+            $ref: '#/components/schemas/ReconstructableSection'
+          type: array
+          title: Reconstructable Section
+        trigger_code_section:
+          items:
+            $ref: '#/components/schemas/TriggerCodeSection'
+          type: array
+          title: Trigger Code Section
+        narrative_data_labels:
+          $ref: '#/components/schemas/NarrativeDataLabels'
+        coded_data_labels:
+          $ref: '#/components/schemas/CodedDataLabels'
+      type: object
+      required:
+      - section_updated_code
+      - disabled_section
+      - narrative_only_section
+      - reconstructable_section
+      - trigger_code_section
+      - narrative_data_labels
+      - coded_data_labels
+      title: UpdateSectionProcessingResponse
+      description: Section with information for a custom section update.
+    StatusFilterOption:
+      properties:
+        label:
+          type: string
+          enum:
+          - Included
+          - Excluded
+          title: Label
+        status:
+          type: string
+          enum:
+          - included
+          - excluded
+          title: Status
+        code_count:
+          type: integer
+          title: Code Count
+      type: object
+      required:
+      - label
+      - status
+      - code_count
+      title: StatusFilterOption
+      description: Model to represent a status filter option.
+    BulkDeleteCustomCodesInput:
+      properties:
+        ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Ids
+        ids_to_skip:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Ids To Skip
+        delete_all:
+          type: boolean
+          title: Delete All
+      type: object
+      required:
+      - ids
+      - ids_to_skip
+      - delete_all
+      title: BulkDeleteCustomCodesInput
+      description: Input model for a bulk custom codes deletion request.
+    UploadCustomCodesPreviewResponse:
+      properties:
+        preview_items:
+          items:
+            $ref: '#/components/schemas/UploadCustomCodesPreviewItem'
+          type: array
+          title: Preview Items
+        codes_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Codes Processed
+        total_custom_codes_in_configuration:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Custom Codes In Configuration
+        code_systems:
+          items:
+            $ref: '#/components/schemas/DbCodeSystem'
+          type: array
+          title: Code Systems
+      type: object
+      required:
+      - preview_items
+      - code_systems
+      title: UploadCustomCodesPreviewResponse
+      description: Validated CSV preview for delayed confirmation; only valid if preview.
+    DbSectionAction:
+      type: string
+      enum:
+      - retain
+      - refine
+    DbTotalConditionCodeCount:
+      properties:
+        condition_id:
+          type: string
+          format: uuid
+          title: Condition Id
+        display_name:
+          type: string
+          title: Display Name
+        total_codes:
+          type: integer
+          title: Total Codes
+      type: object
+      required:
+      - condition_id
+      - display_name
+      - total_codes
+      title: DbTotalConditionCodeCount
+      description: Total code count model.
+    CodeSetStatus:
+      type: string
+      enum:
+      - not expanded
+      - partially complete
+      - fully complete
+    ConfigurationStatusUpdateResponse:
+      properties:
+        configuration_id:
+          type: string
+          format: uuid
+          title: Configuration Id
+        status:
+          $ref: '#/components/schemas/DbConfigurationStatus'
+      type: object
+      required:
+      - configuration_id
+      - status
+      title: ConfigurationStatusUpdateResponse
+      description: Response model for updating the status a configuration.
+    CodesResponse:
+      properties:
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+        codes:
+          items:
+            $ref: '#/components/schemas/CodeResponse'
+          type: array
+          title: Codes
+        codes_limit:
+          $ref: '#/components/schemas/CodesLimitResponse'
+      type: object
+      required:
+      - next_cursor
+      - codes
+      - codes_limit
+      title: CodesResponse
+      description: Codes and metadata to return to the client.
+    DbNarrativeAction:
+      type: string
+      enum:
+      - retain
+      - remove
+      - reconstruct
+      - keep_on_match
+    SourceFilterOption:
+      properties:
+        condition_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Condition Id
+        source:
+          type: string
+          title: Source
+        code_count:
+          type: integer
+          title: Code Count
+      type: object
+      required:
+      - condition_id
+      - source
+      - code_count
+      title: SourceFilterOption
+      description: Model to represent a source filter option.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CreateConfigurationResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: CreateConfigurationResponse
+      description: Configuration creation response model.
+    DbSectionType:
+      type: string
+      enum:
+      - standard
+      - custom
     IncludedCondition:
       properties:
         id:
@@ -1531,120 +1886,69 @@ components:
         listed here has has_match_rules=False in the catalog, and every catalog
 
         section with has_match_rules=False is listed here).'
-    AddCustomCodeInput:
+    UploadCustomCodesCsvInput:
       properties:
-        code:
+        csv_text:
           type: string
-          title: Code
-        display:
-          type: string
-          title: Display
-        system_id:
-          type: string
-          format: uuid
-          title: System Id
-      type: object
-      required:
-      - code
-      - display
-      - system_id
-      title: AddCustomCodeInput
-      description: Input model for adding a custom code to a configuration.
-    UpdateSectionProcessingResponse:
-      properties:
-        section_updated_code:
-          type: string
-          title: Section Updated Code
-        disabled_section:
-          items:
-            $ref: '#/components/schemas/DisabledSection'
-          type: array
-          title: Disabled Section
-        narrative_only_section:
-          items:
-            $ref: '#/components/schemas/NarrativeOnlySection'
-          type: array
-          title: Narrative Only Section
-        reconstructable_section:
-          items:
-            $ref: '#/components/schemas/ReconstructableSection'
-          type: array
-          title: Reconstructable Section
-        trigger_code_section:
-          items:
-            $ref: '#/components/schemas/TriggerCodeSection'
-          type: array
-          title: Trigger Code Section
-        narrative_data_labels:
-          $ref: '#/components/schemas/NarrativeDataLabels'
-        coded_data_labels:
-          $ref: '#/components/schemas/CodedDataLabels'
-      type: object
-      required:
-      - section_updated_code
-      - disabled_section
-      - narrative_only_section
-      - reconstructable_section
-      - trigger_code_section
-      - narrative_data_labels
-      - coded_data_labels
-      title: UpdateSectionProcessingResponse
-      description: Section with information for a custom section update.
-    UploadCustomCodesPreviewResponse:
-      properties:
-        preview_items:
-          items:
-            $ref: '#/components/schemas/UploadCustomCodesPreviewItem'
-          type: array
-          title: Preview Items
-        codes_processed:
+          title: Csv Text
+          description: Full CSV contents as UTF-8 text
+        filename:
           anyOf:
-          - type: integer
+          - type: string
           - type: 'null'
-          title: Codes Processed
-        total_custom_codes_in_configuration:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Custom Codes In Configuration
-        code_systems:
-          items:
-            $ref: '#/components/schemas/DbCodeSystem'
-          type: array
-          title: Code Systems
+          title: Filename
       type: object
       required:
-      - preview_items
-      - code_systems
-      title: UploadCustomCodesPreviewResponse
-      description: Validated CSV preview for delayed confirmation; only valid if preview.
-    GetConfigurationsResponse:
+      - csv_text
+      title: UploadCustomCodesCsvInput
+      description: Input model for Custom Code CSV.
+    NarrativeDataLabels:
+      properties:
+        retain:
+          type: string
+          const: Keep original
+          title: Retain
+          default: Keep original
+        keep_on_match:
+          type: string
+          const: Keep on match
+          title: Keep On Match
+          default: Keep on match
+        reconstruct:
+          type: string
+          const: Reconstruct
+          title: Reconstruct
+          default: Reconstruct
+        remove:
+          type: string
+          const: Exclude
+          title: Remove
+          default: Exclude
+      type: object
+      title: NarrativeDataLabels
+      description: Enum class to type the narrative actions possible for the frontend.
+    ValidateCustomCodeInput:
+      properties:
+        current_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Current Code
+        desired_code:
+          type: string
+          title: Desired Code
+      type: object
+      required:
+      - current_code
+      - desired_code
+      title: ValidateCustomCodeInput
+      description: Input model when validating a config's custom code.
+    UploadCustomCodesPreviewItem:
       properties:
         id:
           type: string
           format: uuid
           title: Id
-        name:
-          type: string
-          title: Name
-        status:
-          $ref: '#/components/schemas/DbConfigurationStatus'
-      type: object
-      required:
-      - id
-      - name
-      - status
-      title: GetConfigurationsResponse
-      description: Model for a user-defined configuration.
-    CustomCodeResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        display:
-          type: string
-          title: Display
         code:
           type: string
           title: Code
@@ -1655,105 +1959,116 @@ components:
         system_name:
           type: string
           title: System Name
+        display:
+          type: string
+          title: Display
+        row:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Row
       type: object
       required:
       - id
-      - display
       - code
       - system_id
       - system_name
-      title: CustomCodeResponse
-      description: Custom code object to return to the client.
-    CodeCountsResponse:
+      - display
+      title: UploadCustomCodesPreviewItem
+      description: Validated CSV row ready for confirmation.
+    CodeSystemFilterOption:
       properties:
-        total_code_count:
+        system_id:
+          type: string
+          format: uuid
+          title: System Id
+        system_name:
+          type: string
+          title: System Name
+        code_count:
           type: integer
-          title: Total Code Count
-        total_code_sets_count:
-          type: integer
-          title: Total Code Sets Count
-        total_excluded_codes_count:
-          type: integer
-          title: Total Excluded Codes Count
-        total_custom_codes_count:
-          type: integer
-          title: Total Custom Codes Count
-        primary_condition_rctc_count:
-          type: integer
-          title: Primary Condition Rctc Count
+          title: Code Count
       type: object
       required:
-      - total_code_count
-      - total_code_sets_count
-      - total_excluded_codes_count
-      - total_custom_codes_count
-      - primary_condition_rctc_count
-      title: CodeCountsResponse
-      description: Code count information to return to the client.
-    DisabledSection:
-      type: string
-      enum:
-      - 83910-0
-      - 88085-6
-      title: DisabledSection
-      description: "These sections are preserved intact in every refined document.\n\nThey sit outside the normal refinement workflow not because the\nrefiner needs to protect them, but because we don't yet have a\nreal-world authoring contract to refine against:\n\n- Reportability Response Information (88085-6) is defined by the\n  eICR STU 3.1.1 IG as a section the PHA populates after eICR\n  receipt, as part of internal data integration -- not something\n  the HCO authors at eICR generation time. It's sketched in the\n  IG but is not part of eICRs flowing through AIMS today.\n\n- Emergency Outbreak Information (83910-0) has a defined section\n  template and a deliberately generic Observation structure\n  (\"unknown until the time of the outbreak,\" per the IG). There\n  is no settled EHR implementation pattern, and the next outbreak\n  will likely shape how this section actually appears in\n  production.\n\nSkipping is the easier path for now and produces Schematron-valid\noutput. We can revisit -- per section, independently -- if and\nwhen either becomes something we actually see in real documents.\n\nThe Enum is the single source of truth: used at runtime to derive\nSECTION_PROCESSING_SKIP, and at the API boundary so Orval ships\nthe concrete LOINC codes to the frontend as const values rather\nthan as plain `string[]`."
-    Body_setCodesStatus:
+      - system_id
+      - system_name
+      - code_count
+      title: CodeSystemFilterOption
+      description: Model to represent a code system filter option.
+    SerializedFiles:
       properties:
-        code_ids_to_skip:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Code Ids To Skip
-        code_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Code Ids
+        active:
+          $ref: '#/components/schemas/SerializedFile'
+        current:
+          $ref: '#/components/schemas/SerializedFile'
+        metadata:
+          $ref: '#/components/schemas/SerializedFile'
       type: object
       required:
-      - code_ids_to_skip
-      - code_ids
-      title: Body_setCodesStatus
-    CodesLimitResponse:
+      - active
+      - current
+      - metadata
+      title: SerializedFiles
+      description: Dataclass for serialized file data.
+    ValidateCustomCodeResponse:
       properties:
-        codes_limit:
-          type: integer
-          const: 100
-          title: Codes Limit
-          default: 100
-      type: object
-      title: CodesLimitResponse
-      description: Utility class to help Orval ship these values to the frontend.
-    SerializedFile:
-      properties:
-        key:
-          type: string
-          title: Key
-        content:
-          type: string
-          title: Content
+        valid:
+          type: boolean
+          title: Valid
       type: object
       required:
-      - key
-      - content
-      title: SerializedFile
-      description: An individual serialized file.
-    AddSectionInput:
+      - valid
+      title: ValidateCustomCodeResponse
+      description: Validation response model.
+    SectionUpdateInput:
       properties:
-        code:
-          type: string
-          title: Code
+        include:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Include
+        narrative:
+          anyOf:
+          - $ref: '#/components/schemas/DbNarrativeAction'
+          - type: 'null'
+        action:
+          anyOf:
+          - $ref: '#/components/schemas/DbSectionAction'
+          - type: 'null'
         name:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Name
+        current_code:
+          type: string
+          title: Current Code
+        new_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: New Code
       type: object
       required:
-      - code
-      - name
-      title: AddSectionInput
-      description: Request body for adding a section.
+      - current_code
+      title: SectionUpdateInput
+      description: Input model for updating a section's processing instructions.
+    Body_runInlineConfigurationTest:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        uploaded_file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: Uploaded File
+      type: object
+      required:
+      - id
+      title: Body_runInlineConfigurationTest
     GetConfigurationResponseVersion:
       properties:
         id:
@@ -1798,218 +2113,6 @@ components:
       - last_activated_by
       title: GetConfigurationResponseVersion
       description: Model representing a version of a configuration.
-    Condition:
-      properties:
-        code:
-          type: string
-          title: Code
-        display_name:
-          type: string
-          title: Display Name
-        refined_eicr:
-          type: string
-          title: Refined Eicr
-        stats:
-          items:
-            type: string
-          type: array
-          title: Stats
-        render_diff:
-          type: boolean
-          title: Render Diff
-      type: object
-      required:
-      - code
-      - display_name
-      - refined_eicr
-      - stats
-      - render_diff
-      title: Condition
-      description: Model for a Condition.
-    DbCodeSystem:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        key:
-          type: string
-          title: Key
-        display_name:
-          type: string
-          title: Display Name
-        oid:
-          type: string
-          title: Oid
-      type: object
-      required:
-      - id
-      - key
-      - display_name
-      - oid
-      title: DbCodeSystem
-      description: A code system row from the `systems` table.
-    ConfigurationStatusUpdateResponse:
-      properties:
-        configuration_id:
-          type: string
-          format: uuid
-          title: Configuration Id
-        status:
-          $ref: '#/components/schemas/DbConfigurationStatus'
-      type: object
-      required:
-      - configuration_id
-      - status
-      title: ConfigurationStatusUpdateResponse
-      description: Response model for updating the status a configuration.
-    DbSectionType:
-      type: string
-      enum:
-      - standard
-      - custom
-    CodeFilterOptions:
-      properties:
-        code_systems:
-          items:
-            $ref: '#/components/schemas/CodeSystemFilterOption'
-          type: array
-          title: Code Systems
-        sources:
-          items:
-            $ref: '#/components/schemas/SourceFilterOption'
-          type: array
-          title: Sources
-        statuses:
-          items:
-            $ref: '#/components/schemas/StatusFilterOption'
-          type: array
-          title: Statuses
-      type: object
-      required:
-      - code_systems
-      - sources
-      - statuses
-      title: CodeFilterOptions
-      description: Model to represent all filter options available to the client.
-    ValidateCustomCodeResponse:
-      properties:
-        valid:
-          type: boolean
-          title: Valid
-      type: object
-      required:
-      - valid
-      title: ValidateCustomCodeResponse
-      description: Validation response model.
-    CodedDataLabels:
-      properties:
-        retain:
-          type: string
-          const: Keep original
-          title: Retain
-          default: Keep original
-        refine:
-          type: string
-          const: Refine
-          title: Refine
-          default: Refine
-      type: object
-      title: CodedDataLabels
-      description: Enum class to type the narrative actions possible for the frontend.
-    SourceFilterOption:
-      properties:
-        condition_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Condition Id
-        source:
-          type: string
-          title: Source
-        code_count:
-          type: integer
-          title: Code Count
-      type: object
-      required:
-      - condition_id
-      - source
-      - code_count
-      title: SourceFilterOption
-      description: Model to represent a source filter option.
-    ConfigurationTestResponse:
-      properties:
-        original_eicr:
-          type: string
-          title: Original Eicr
-        refined_download_key:
-          type: string
-          title: Refined Download Key
-        condition:
-          $ref: '#/components/schemas/Condition'
-      type: object
-      required:
-      - original_eicr
-      - refined_download_key
-      - condition
-      title: ConfigurationTestResponse
-      description: Model to represent the response provided to the client when in-line testing is run.
-    DbSectionAction:
-      type: string
-      enum:
-      - retain
-      - refine
-    DeleteSectionInput:
-      properties:
-        code:
-          type: string
-          title: Code
-      type: object
-      required:
-      - code
-      title: DeleteSectionInput
-      description: Request body to delete a section.
-    BulkDeleteCustomCodesInput:
-      properties:
-        ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Ids
-        ids_to_skip:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Ids To Skip
-        delete_all:
-          type: boolean
-          title: Delete All
-      type: object
-      required:
-      - ids
-      - ids_to_skip
-      - delete_all
-      title: BulkDeleteCustomCodesInput
-      description: Input model for a bulk custom codes deletion request.
-    Body_runInlineConfigurationTest:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        uploaded_file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: Uploaded File
-      type: object
-      required:
-      - id
-      title: Body_runInlineConfigurationTest
     AssociateCodesetInput:
       properties:
         condition_id:
@@ -2021,214 +2124,32 @@ components:
       - condition_id
       title: AssociateCodesetInput
       description: Condition association input model.
-    CreateConfigurationResponse:
+    ValidationError:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - id
-      - name
-      title: CreateConfigurationResponse
-      description: Configuration creation response model.
-    ReconstructableSection:
-      type: string
-      enum:
-      - 30954-2
-      - 11450-4
-      - 11369-6
-      - 29549-3
-      - 18776-5
-      title: ReconstructableSection
-      description: 'These sections support the "reconstruct" narrative action.
-
-
-        Results, Problems, Immunizations, Medications Administered, and Plan of
-
-        Treatment are enabled. Make sure to update unit tests to ensure only
-
-        certain sections are reconstructable.'
-    CodeSystemFilterOption:
-      properties:
-        system_id:
-          type: string
-          format: uuid
-          title: System Id
-        system_name:
-          type: string
-          title: System Name
-        code_count:
-          type: integer
-          title: Code Count
-      type: object
-      required:
-      - system_id
-      - system_name
-      - code_count
-      title: CodeSystemFilterOption
-      description: Model to represent a code system filter option.
-    DbCode:
-      properties:
-        code:
-          type: string
-          title: Code
-        display:
-          type: string
-          title: Display
-        system_id:
-          type: string
-          format: uuid
-          title: System Id
-        system_name:
-          type: string
-          title: System Name
-      type: object
-      required:
-      - code
-      - display
-      - system_id
-      - system_name
-      title: DbCode
-      description: Model for all coded information stored in the codes table.
-    ConfirmUploadCustomCodesInput:
-      properties:
-        custom_codes:
+        loc:
           items:
-            $ref: '#/components/schemas/AddCustomCodeInput'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Custom Codes
-      type: object
-      required:
-      - custom_codes
-      title: ConfirmUploadCustomCodesInput
-      description: Payload used to confirm a previously validated CSV import.
-    CodeSetStatus:
-      type: string
-      enum:
-      - not expanded
-      - partially complete
-      - fully complete
-    DbConfigurationStatus:
-      type: string
-      enum:
-      - draft
-      - inactive
-      - active
-    DbTotalConditionCodeCount:
-      properties:
-        condition_id:
+          title: Location
+        msg:
           type: string
-          format: uuid
-          title: Condition Id
-        display_name:
+          title: Message
+        type:
           type: string
-          title: Display Name
-        total_codes:
-          type: integer
-          title: Total Codes
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - condition_id
-      - display_name
-      - total_codes
-      title: DbTotalConditionCodeCount
-      description: Total code count model.
-    TriggerCodeSection:
-      type: string
-      enum:
-      - 10160-0
-      - 11369-6
-      - 11450-4
-      - 18776-5
-      - 29549-3
-      - 30954-2
-      - 42346-7
-      - 46240-8
-      - 47519-4
-      title: TriggerCodeSection
-      description: 'These sections can carry an eICR trigger code template.
-
-
-        The eICR IG defines trigger code templates for these sections, so a
-
-        trigger code — the coded evidence of *why* the document was
-
-        generated — can appear in any of them. Removing a section strips
-
-        every `<entry>` it holds and marks it `nullFlavor="NI"` (see
-
-        `create_minimal_section`), so a jurisdiction that turned all of
-
-        these off would emit a document with no trigger codes anywhere and
-
-        fail Schematron validation.
-
-
-        In practice this is unlikely: nearly all RCTC codes from the eRSD
-
-        are carried in the reporting specification groupers, and the
-
-        additional context groupers widen that further, so a configuration
-
-        would normally match the trigger code and keep the section. This
-
-        policy exists to close the foot-gun, not because we expect
-
-        jurisdictions to walk into it.
-
-
-        The refiner therefore forces `include=True` for these sections.
-
-        Every other setting stays under jurisdiction control — coded data
-
-        may still be refined or retained, and the narrative may be
-
-        retained, removed, kept on match, or reconstructed.
-
-
-        Membership is IG-derived, not a judgement call: the codes here are
-
-        the union of `specification.get_trigger_code_sections()` across
-
-        every supported eICR version. The union matters because a
-
-        configuration is authored once and applied to whichever version
-
-        arrives. The Enum is spelled out rather than computed so Orval
-
-        ships concrete LOINC codes to the frontend, and so a change to the
-
-        IG manifest surfaces as a failing drift test rather than silently
-
-        relaxing every jurisdiction''s configuration. A unit test guards
-
-        that this enum stays in sync with the specification.'
-    CodesResponse:
-      properties:
-        next_cursor:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Next Cursor
-        codes:
-          items:
-            $ref: '#/components/schemas/CodeResponse'
-          type: array
-          title: Codes
-        codes_limit:
-          $ref: '#/components/schemas/CodesLimitResponse'
-      type: object
-      required:
-      - next_cursor
-      - codes
-      - codes_limit
-      title: CodesResponse
-      description: Codes and metadata to return to the client.
+      - loc
+      - msg
+      - type
+      title: ValidationError
     GetConfigurationResponse:
       properties:
         id:
@@ -2333,244 +2254,54 @@ components:
       - locked_by
       title: GetConfigurationResponse
       description: Model for a configuration response.
-    LockedByUser:
+    Body_setCodesStatus:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        email:
-          type: string
-          title: Email
-      type: object
-      required:
-      - id
-      - name
-      - email
-      title: LockedByUser
-      description: LockedByUser response to provide user information.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DbNarrativeAction:
-      type: string
-      enum:
-      - retain
-      - remove
-      - reconstruct
-      - keep_on_match
-    SerializedFiles:
-      properties:
-        active:
-          $ref: '#/components/schemas/SerializedFile'
-        current:
-          $ref: '#/components/schemas/SerializedFile'
-        metadata:
-          $ref: '#/components/schemas/SerializedFile'
-      type: object
-      required:
-      - active
-      - current
-      - metadata
-      title: SerializedFiles
-      description: Dataclass for serialized file data.
-    StatusFilterOption:
-      properties:
-        label:
-          type: string
-          enum:
-          - Included
-          - Excluded
-          title: Label
-        status:
-          type: string
-          enum:
-          - included
-          - excluded
-          title: Status
-        code_count:
-          type: integer
-          title: Code Count
-      type: object
-      required:
-      - label
-      - status
-      - code_count
-      title: StatusFilterOption
-      description: Model to represent a status filter option.
-    UploadCustomCodesCsvInput:
-      properties:
-        csv_text:
-          type: string
-          title: Csv Text
-          description: Full CSV contents as UTF-8 text
-        filename:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Filename
-      type: object
-      required:
-      - csv_text
-      title: UploadCustomCodesCsvInput
-      description: Input model for Custom Code CSV.
-    UpdateCustomCodeInput:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        system_id:
-          type: string
-          format: uuid
-          title: System Id
-        code:
-          type: string
-          title: Code
-        display:
-          type: string
-          title: Display
-      type: object
-      required:
-      - id
-      - system_id
-      - code
-      - display
-      title: UpdateCustomCodeInput
-      description: Input model when updating a config's custom code.
-    SectionUpdateInput:
-      properties:
-        include:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Include
-        narrative:
-          anyOf:
-          - $ref: '#/components/schemas/DbNarrativeAction'
-          - type: 'null'
-        action:
-          anyOf:
-          - $ref: '#/components/schemas/DbSectionAction'
-          - type: 'null'
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        current_code:
-          type: string
-          title: Current Code
-        new_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: New Code
-      type: object
-      required:
-      - current_code
-      title: SectionUpdateInput
-      description: Input model for updating a section's processing instructions.
-    AssociateCodesetResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        included_conditions:
+        code_ids_to_skip:
           items:
             type: string
             format: uuid
           type: array
-          title: Included Conditions
-        condition_name:
-          type: string
-          title: Condition Name
+          title: Code Ids To Skip
+        code_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Code Ids
       type: object
       required:
-      - id
-      - included_conditions
-      - condition_name
-      title: AssociateCodesetResponse
-      description: Response from adding a code set to a config.
-    ValidateCustomCodeInput:
+      - code_ids_to_skip
+      - code_ids
+      title: Body_setCodesStatus
+    ConfirmUploadCustomCodesInput:
       properties:
-        current_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Current Code
-        desired_code:
-          type: string
-          title: Desired Code
+        custom_codes:
+          items:
+            $ref: '#/components/schemas/AddCustomCodeInput'
+          type: array
+          title: Custom Codes
       type: object
       required:
-      - current_code
-      - desired_code
-      title: ValidateCustomCodeInput
-      description: Input model when validating a config's custom code.
-    CreateConfigInput:
-      properties:
-        condition_id:
-          type: string
-          format: uuid
-          title: Condition Id
-      type: object
-      required:
-      - condition_id
-      title: CreateConfigInput
-      description: Body required to create a new configuration.
-    NarrativeDataLabels:
-      properties:
-        retain:
-          type: string
-          const: Keep original
-          title: Retain
-          default: Keep original
-        keep_on_match:
-          type: string
-          const: Keep on match
-          title: Keep On Match
-          default: Keep on match
-        reconstruct:
-          type: string
-          const: Reconstruct
-          title: Reconstruct
-          default: Reconstruct
-        remove:
-          type: string
-          const: Exclude
-          title: Remove
-          default: Exclude
-      type: object
-      title: NarrativeDataLabels
-      description: Enum class to type the narrative actions possible for the frontend.
+      - custom_codes
+      title: ConfirmUploadCustomCodesInput
+      description: Payload used to confirm a previously validated CSV import.
+    ReconstructableSection:
+      type: string
+      enum:
+      - 30954-2
+      - 11450-4
+      - 11369-6
+      - 29549-3
+      - 18776-5
+      title: ReconstructableSection
+      description: 'These sections support the "reconstruct" narrative action.
+
+
+        Results, Problems, Immunizations, Medications Administered, and Plan of
+
+        Treatment are enabled. Make sure to update unit tests to ensure only
+
+        certain sections are reconstructable.'
     CodeResponse:
       properties:
         id:
@@ -2627,21 +2358,71 @@ components:
       - is_trigger_code
       title: CodeResponse
       description: Code object to return to the client.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UploadCustomCodesPreviewItem:
+    DbCodeSystem:
       properties:
         id:
           type: string
           format: uuid
           title: Id
+        key:
+          type: string
+          title: Key
+        display_name:
+          type: string
+          title: Display Name
+        oid:
+          type: string
+          title: Oid
+      type: object
+      required:
+      - id
+      - key
+      - display_name
+      - oid
+      title: DbCodeSystem
+      description: A code system row from the `systems` table.
+    GetConfigurationsResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        status:
+          $ref: '#/components/schemas/DbConfigurationStatus'
+      type: object
+      required:
+      - id
+      - name
+      - status
+      title: GetConfigurationsResponse
+      description: Model for a user-defined configuration.
+    CodedDataLabels:
+      properties:
+        retain:
+          type: string
+          const: Keep original
+          title: Retain
+          default: Keep original
+        refine:
+          type: string
+          const: Refine
+          title: Refine
+          default: Refine
+      type: object
+      title: CodedDataLabels
+      description: Enum class to type the narrative actions possible for the frontend.
+    CustomCodeResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        display:
+          type: string
+          title: Display
         code:
           type: string
           title: Code
@@ -2652,23 +2433,139 @@ components:
         system_name:
           type: string
           title: System Name
-        display:
-          type: string
-          title: Display
-        row:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Row
       type: object
       required:
       - id
+      - display
       - code
       - system_id
       - system_name
+      title: CustomCodeResponse
+      description: Custom code object to return to the client.
+    Condition:
+      properties:
+        code:
+          type: string
+          title: Code
+        display_name:
+          type: string
+          title: Display Name
+        refined_eicr:
+          type: string
+          title: Refined Eicr
+        stats:
+          items:
+            type: string
+          type: array
+          title: Stats
+        render_diff:
+          type: boolean
+          title: Render Diff
+      type: object
+      required:
+      - code
+      - display_name
+      - refined_eicr
+      - stats
+      - render_diff
+      title: Condition
+      description: Model for a Condition.
+    DbConfigurationStatus:
+      type: string
+      enum:
+      - draft
+      - inactive
+      - active
+    DisabledSection:
+      type: string
+      enum:
+      - 83910-0
+      - 88085-6
+      title: DisabledSection
+      description: "These sections are preserved intact in every refined document.\n\nThey sit outside the normal refinement workflow not because the\nrefiner needs to protect them, but because we don't yet have a\nreal-world authoring contract to refine against:\n\n- Reportability Response Information (88085-6) is defined by the\n  eICR STU 3.1.1 IG as a section the PHA populates after eICR\n  receipt, as part of internal data integration -- not something\n  the HCO authors at eICR generation time. It's sketched in the\n  IG but is not part of eICRs flowing through AIMS today.\n\n- Emergency Outbreak Information (83910-0) has a defined section\n  template and a deliberately generic Observation structure\n  (\"unknown until the time of the outbreak,\" per the IG). There\n  is no settled EHR implementation pattern, and the next outbreak\n  will likely shape how this section actually appears in\n  production.\n\nSkipping is the easier path for now and produces Schematron-valid\noutput. We can revisit -- per section, independently -- if and\nwhen either becomes something we actually see in real documents.\n\nThe Enum is the single source of truth: used at runtime to derive\nSECTION_PROCESSING_SKIP, and at the API boundary so Orval ships\nthe concrete LOINC codes to the frontend as const values rather\nthan as plain `string[]`."
+    UpdateCustomCodeInput:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        system_id:
+          type: string
+          format: uuid
+          title: System Id
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+      type: object
+      required:
+      - id
+      - system_id
+      - code
       - display
-      title: UploadCustomCodesPreviewItem
-      description: Validated CSV row ready for confirmation.
+      title: UpdateCustomCodeInput
+      description: Input model when updating a config's custom code.
+    CreateConfigInput:
+      properties:
+        condition_id:
+          type: string
+          format: uuid
+          title: Condition Id
+      type: object
+      required:
+      - condition_id
+      title: CreateConfigInput
+      description: Body required to create a new configuration.
+    CodesLimitResponse:
+      properties:
+        codes_limit:
+          type: integer
+          const: 100
+          title: Codes Limit
+          default: 100
+      type: object
+      title: CodesLimitResponse
+      description: Utility class to help Orval ship these values to the frontend.
+    CodeFilterOptions:
+      properties:
+        code_systems:
+          items:
+            $ref: '#/components/schemas/CodeSystemFilterOption'
+          type: array
+          title: Code Systems
+        sources:
+          items:
+            $ref: '#/components/schemas/SourceFilterOption'
+          type: array
+          title: Sources
+        statuses:
+          items:
+            $ref: '#/components/schemas/StatusFilterOption'
+          type: array
+          title: Statuses
+      type: object
+      required:
+      - code_systems
+      - sources
+      - statuses
+      title: CodeFilterOptions
+      description: Model to represent all filter options available to the client.
+    AddSectionInput:
+      properties:
+        code:
+          type: string
+          title: Code
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - code
+      - name
+      title: AddSectionInput
+      description: Request body for adding a section.
     DbConfigurationSectionProcessing:
       properties:
         include:
@@ -2711,3 +2608,106 @@ components:
         `versions` is a list of versions this section appears in.
 
         `section_type` is an indicator as to how the section was created.'
+    TriggerCodeSection:
+      type: string
+      enum:
+      - 10160-0
+      - 11369-6
+      - 11450-4
+      - 18776-5
+      - 29549-3
+      - 30954-2
+      - 42346-7
+      - 46240-8
+      - 47519-4
+      title: TriggerCodeSection
+      description: 'These sections can carry an eICR trigger code template.
+
+
+        The eICR IG defines trigger code templates for these sections, so a
+
+        trigger code — the coded evidence of *why* the document was
+
+        generated — can appear in any of them. Removing a section strips
+
+        every `<entry>` it holds and marks it `nullFlavor="NI"` (see
+
+        `create_minimal_section`), so a jurisdiction that turned all of
+
+        these off would emit a document with no trigger codes anywhere and
+
+        fail Schematron validation.
+
+
+        In practice this is unlikely: nearly all RCTC codes from the eRSD
+
+        are carried in the reporting specification groupers, and the
+
+        additional context groupers widen that further, so a configuration
+
+        would normally match the trigger code and keep the section. This
+
+        policy exists to close the foot-gun, not because we expect
+
+        jurisdictions to walk into it.
+
+
+        The refiner therefore forces `include=True` for these sections.
+
+        Every other setting stays under jurisdiction control — coded data
+
+        may still be refined or retained, and the narrative may be
+
+        retained, removed, kept on match, or reconstructed.
+
+
+        Membership is IG-derived, not a judgement call: the codes here are
+
+        the union of `specification.get_trigger_code_sections()` across
+
+        every supported eICR version. The union matters because a
+
+        configuration is authored once and applied to whichever version
+
+        arrives. The Enum is spelled out rather than computed so Orval
+
+        ships concrete LOINC codes to the frontend, and so a change to the
+
+        IG manifest surfaces as a failing drift test rather than silently
+
+        relaxing every jurisdiction''s configuration. A unit test guards
+
+        that this enum stays in sync with the specification.'
+    DeleteSectionInput:
+      properties:
+        code:
+          type: string
+          title: Code
+      type: object
+      required:
+      - code
+      title: DeleteSectionInput
+      description: Request body to delete a section.
+    DbCode:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+        system_id:
+          type: string
+          format: uuid
+          title: System Id
+        system_name:
+          type: string
+          title: System Name
+      type: object
+      required:
+      - code
+      - display
+      - system_id
+      - system_name
+      title: DbCode
+      description: Model for all coded information stored in the codes table.

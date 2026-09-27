@@ -60,18 +60,6 @@ components:
       - url
       title: Release
       description: Type for release information sent to the frontend.
-    ReleasesResponse:
-      properties:
-        releases:
-          items:
-            $ref: '#/components/schemas/Release'
-          type: array
-          title: Releases
-      type: object
-      required:
-      - releases
-      title: ReleasesResponse
-      description: Response for releases as returned through the GitHub API.
     ReleaseNotes:
       properties:
         id:
@@ -90,3 +78,15 @@ components:
       - content
       title: ReleaseNotes
       description: Content of a release note from GitHub.
+    ReleasesResponse:
+      properties:
+        releases:
+          items:
+            $ref: '#/components/schemas/Release'
+          type: array
+          title: Releases
+      type: object
+      required:
+      - releases
+      title: ReleasesResponse
+      description: Response for releases as returned through the GitHub API.

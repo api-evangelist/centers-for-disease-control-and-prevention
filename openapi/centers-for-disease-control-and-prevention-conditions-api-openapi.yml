@@ -80,111 +80,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DbCode:
-      properties:
-        code:
-          type: string
-          title: Code
-        display:
-          type: string
-          title: Display
-        system_id:
-          type: string
-          format: uuid
-          title: System Id
-        system_name:
-          type: string
-          title: System Name
-      type: object
-      required:
-      - code
-      - display
-      - system_id
-      - system_name
-      title: DbCode
-      description: Model for all coded information stored in the codes table.
-    CodedConcept:
-      properties:
-        code:
-          type: string
-          title: Code
-        display:
-          type: string
-          title: Display
-      type: object
-      required:
-      - code
-      - display
-      title: CodedConcept
-      description: Code / display name minimal representation of a codeable concept.
-    CodeSetStatus:
-      type: string
-      enum:
-      - not expanded
-      - partially complete
-      - fully complete
-    GetConditionResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        display_name:
-          type: string
-          title: Display Name
-        completeness_status:
-          $ref: '#/components/schemas/CompletenessStatus'
-        codes:
-          items:
-            $ref: '#/components/schemas/DbCode'
-          type: array
-          title: Codes
-        systems:
-          items:
-            $ref: '#/components/schemas/CodeSystemsReponse'
-          type: array
-          title: Systems
-      type: object
-      required:
-      - id
-      - display_name
-      - completeness_status
-      - codes
-      - systems
-      title: GetConditionResponse
-      description: Condition response model.
-    CodeCategoryStatus:
-      type: string
-      enum:
-      - not included
-      - partially complete
-      - fully complete
     CodeSystemsReponse:
       properties:
         id:
@@ -229,6 +124,26 @@ components:
       - rsg_codes
       title: GetConditionsResponse
       description: Conditions response model.
+    CodedConcept:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+      type: object
+      required:
+      - code
+      - display
+      title: CodedConcept
+      description: Code / display name minimal representation of a codeable concept.
+    CodeSetStatus:
+      type: string
+      enum:
+      - not expanded
+      - partially complete
+      - fully complete
     CodeCategoryCompletenessStatus:
       properties:
         category:
@@ -246,6 +161,91 @@ components:
       - completeness
       title: CodeCategoryCompletenessStatus
       description: Code category completeness status model.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    GetConditionResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        display_name:
+          type: string
+          title: Display Name
+        completeness_status:
+          $ref: '#/components/schemas/CompletenessStatus'
+        codes:
+          items:
+            $ref: '#/components/schemas/DbCode'
+          type: array
+          title: Codes
+        systems:
+          items:
+            $ref: '#/components/schemas/CodeSystemsReponse'
+          type: array
+          title: Systems
+      type: object
+      required:
+      - id
+      - display_name
+      - completeness_status
+      - codes
+      - systems
+      title: GetConditionResponse
+      description: Condition response model.
+    CodeCategoryStatus:
+      type: string
+      enum:
+      - not included
+      - partially complete
+      - fully complete
+    DbCode:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+        system_id:
+          type: string
+          format: uuid
+          title: System Id
+        system_name:
+          type: string
+          title: System Name
+      type: object
+      required:
+      - code
+      - display
+      - system_id
+      - system_name
+      title: DbCode
+      description: Model for all coded information stored in the codes table.
     CompletenessStatus:
       properties:
         code_set_status:

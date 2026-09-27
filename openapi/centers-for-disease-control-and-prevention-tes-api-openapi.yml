@@ -170,57 +170,6 @@ paths:
                 $ref: '#/components/schemas/TesConfigsToUpdateResponse'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    TesConfigToUpdate:
-      properties:
-        configuration_id:
-          type: string
-          format: uuid
-          title: Configuration Id
-        configuration_name:
-          type: string
-          title: Configuration Name
-        codesets_to_update:
-          items:
-            type: string
-          type: array
-          title: Codesets To Update
-        configuration_tes_version:
-          type: string
-          title: Configuration Tes Version
-      type: object
-      required:
-      - configuration_id
-      - configuration_name
-      - codesets_to_update
-      - configuration_tes_version
-      title: TesConfigToUpdate
-      description: A configuration to update with new TES codes.
     TesUpdate:
       properties:
         id:
@@ -267,6 +216,69 @@ components:
       - is_new
       title: TesDiffConditionDetails
       description: A condition within a TES diff, with details for the diff page to display.
+    TesConfigToUpdate:
+      properties:
+        configuration_id:
+          type: string
+          format: uuid
+          title: Configuration Id
+        configuration_name:
+          type: string
+          title: Configuration Name
+        codesets_to_update:
+          items:
+            type: string
+          type: array
+          title: Codesets To Update
+        configuration_tes_version:
+          type: string
+          title: Configuration Tes Version
+      type: object
+      required:
+      - configuration_id
+      - configuration_name
+      - codesets_to_update
+      - configuration_tes_version
+      title: TesConfigToUpdate
+      description: A configuration to update with new TES codes.
+    TesResponse:
+      properties:
+        tes_updates:
+          items:
+            $ref: '#/components/schemas/TesUpdate'
+          type: array
+          title: Tes Updates
+      type: object
+      required:
+      - tes_updates
+      title: TesResponse
+      description: Response needed for the TES updates page.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     TesConfigsToUpdateResponse:
       properties:
         existing_drafts:
@@ -294,15 +306,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    TesResponse:
-      properties:
-        tes_updates:
-          items:
-            $ref: '#/components/schemas/TesUpdate'
-          type: array
-          title: Tes Updates
-      type: object
-      required:
-      - tes_updates
-      title: TesResponse
-      description: Response needed for the TES updates page.
