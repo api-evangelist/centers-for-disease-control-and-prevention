@@ -139,123 +139,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    Condition:
-      properties:
-        code:
-          type: string
-          title: Code
-        display_name:
-          type: string
-          title: Display Name
-        refined_eicr:
-          type: string
-          title: Refined Eicr
-        stats:
-          items:
-            type: string
-          type: array
-          title: Stats
-        render_diff:
-          type: boolean
-          title: Render Diff
-      type: object
-      required:
-      - code
-      - display_name
-      - refined_eicr
-      - stats
-      - render_diff
-      title: Condition
-      description: Model for a Condition.
-    Body_discoverConfigurations:
-      properties:
-        uploaded_file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: Uploaded File
-      type: object
-      title: Body_discoverConfigurations
-    FileInfoResponse:
-      properties:
-        max_for_diff_rendering_mb:
-          type: integer
-          const: 2
-          title: Max For Diff Rendering Mb
-          default: 2
-        max_for_uncompressed_mb:
-          type: integer
-          const: 15
-          title: Max For Uncompressed Mb
-          default: 15
-      type: object
-      title: FileInfoResponse
-      description: Utility class to help Orval ship these values to the frontend.
-    DbConfigurationStatus:
-      type: string
-      enum:
-      - draft
-      - inactive
-      - active
-    SimulatorUploadResponse:
-      properties:
-        message:
-          type: string
-          title: Message
-        refined_conditions_found:
-          type: integer
-          title: Refined Conditions Found
-        refined_conditions:
-          items:
-            $ref: '#/components/schemas/Condition'
-          type: array
-          title: Refined Conditions
-        unrefined_eicr:
-          type: string
-          title: Unrefined Eicr
-        refined_download_key:
-          type: string
-          title: Refined Download Key
-        file_info_response:
-          $ref: '#/components/schemas/FileInfoResponse'
-      type: object
-      required:
-      - message
-      - refined_conditions_found
-      - refined_conditions
-      - unrefined_eicr
-      - refined_download_key
-      - file_info_response
-      title: SimulatorUploadResponse
-      description: Model for the response when uploading a document in the simulate testing suite.
-    DiscoveredConfigurationsResponse:
-      properties:
-        sets:
-          items:
-            $ref: '#/components/schemas/DiscoveredConfigurationSet'
-          type: array
-          title: Sets
-      type: object
-      required:
-      - sets
-      title: DiscoveredConfigurationsResponse
-      description: Model to represent the sets of discovered configurations to return to the client.
-    Body_uploadEcr:
-      properties:
-        body:
-          type: string
-          title: Body
-        uploaded_file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: Uploaded File
-      type: object
-      required:
-      - body
-      title: Body_uploadEcr
     DiscoveredConfigurationVersion:
       properties:
         id:
@@ -300,6 +183,80 @@ components:
       - msg
       - type
       title: ValidationError
+    FileInfoResponse:
+      properties:
+        max_for_diff_rendering_mb:
+          type: integer
+          const: 2
+          title: Max For Diff Rendering Mb
+          default: 2
+        max_for_uncompressed_mb:
+          type: integer
+          const: 15
+          title: Max For Uncompressed Mb
+          default: 15
+      type: object
+      title: FileInfoResponse
+      description: Utility class to help Orval ship these values to the frontend.
+    Body_discoverConfigurations:
+      properties:
+        uploaded_file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: Uploaded File
+      type: object
+      title: Body_discoverConfigurations
+    DiscoveredConfigurationsResponse:
+      properties:
+        sets:
+          items:
+            $ref: '#/components/schemas/DiscoveredConfigurationSet'
+          type: array
+          title: Sets
+      type: object
+      required:
+      - sets
+      title: DiscoveredConfigurationsResponse
+      description: Model to represent the sets of discovered configurations to return to the client.
+    DbConfigurationStatus:
+      type: string
+      enum:
+      - draft
+      - inactive
+      - active
+    SimulatorUploadResponse:
+      properties:
+        message:
+          type: string
+          title: Message
+        refined_conditions_found:
+          type: integer
+          title: Refined Conditions Found
+        refined_conditions:
+          items:
+            $ref: '#/components/schemas/Condition'
+          type: array
+          title: Refined Conditions
+        unrefined_eicr:
+          type: string
+          title: Unrefined Eicr
+        refined_download_key:
+          type: string
+          title: Refined Download Key
+        file_info_response:
+          $ref: '#/components/schemas/FileInfoResponse'
+      type: object
+      required:
+      - message
+      - refined_conditions_found
+      - refined_conditions
+      - unrefined_eicr
+      - refined_download_key
+      - file_info_response
+      title: SimulatorUploadResponse
+      description: Model for the response when uploading a document in the simulate testing suite.
     DiscoveredConfigurationSet:
       properties:
         name:
@@ -321,6 +278,34 @@ components:
       - versions
       title: DiscoveredConfigurationSet
       description: Model to represent a set of discovered configurations.
+    Condition:
+      properties:
+        code:
+          type: string
+          title: Code
+        display_name:
+          type: string
+          title: Display Name
+        refined_eicr:
+          type: string
+          title: Refined Eicr
+        stats:
+          items:
+            type: string
+          type: array
+          title: Stats
+        render_diff:
+          type: boolean
+          title: Render Diff
+      type: object
+      required:
+      - code
+      - display_name
+      - refined_eicr
+      - stats
+      - render_diff
+      title: Condition
+      description: Model for a Condition.
     HTTPValidationError:
       properties:
         detail:
@@ -330,3 +315,18 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    Body_uploadEcr:
+      properties:
+        body:
+          type: string
+          title: Body
+        uploaded_file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: Uploaded File
+      type: object
+      required:
+      - body
+      title: Body_uploadEcr
