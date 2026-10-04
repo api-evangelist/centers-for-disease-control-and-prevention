@@ -34,15 +34,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    UpdateUserNotificationsRequest:
-      properties:
-        key:
-          $ref: '#/components/schemas/NotificationKeys'
-      type: object
-      required:
-      - key
-      title: UpdateUserNotificationsRequest
-      description: Request to update notification acknowledgement state for the current user.
     ValidationError:
       properties:
         loc:
@@ -69,28 +60,6 @@ components:
       - msg
       - type
       title: ValidationError
-    UserResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        username:
-          type: string
-          title: Username
-        jurisdiction_id:
-          type: string
-          title: Jurisdiction Id
-        notifications:
-          $ref: '#/components/schemas/NotificationsToRender'
-      type: object
-      required:
-      - id
-      - username
-      - jurisdiction_id
-      - notifications
-      title: UserResponse
-      description: User information to send to the client.
     HTTPValidationError:
       properties:
         detail:
@@ -121,3 +90,34 @@ components:
       - most_recent_tes_update
       title: NotificationKeys
       description: Enum class to type the values of the notifications possible for actioning on the frontend.
+    UserResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        username:
+          type: string
+          title: Username
+        jurisdiction_id:
+          type: string
+          title: Jurisdiction Id
+        notifications:
+          $ref: '#/components/schemas/NotificationsToRender'
+      type: object
+      required:
+      - id
+      - username
+      - jurisdiction_id
+      - notifications
+      title: UserResponse
+      description: User information to send to the client.
+    UpdateUserNotificationsRequest:
+      properties:
+        key:
+          $ref: '#/components/schemas/NotificationKeys'
+      type: object
+      required:
+      - key
+      title: UpdateUserNotificationsRequest
+      description: Request to update notification acknowledgement state for the current user.

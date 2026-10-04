@@ -120,15 +120,6 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   parameters:
-    DatasetId:
-      in: path
-      name: dataset_id
-      required: true
-      schema:
-        type: string
-        pattern: ^[a-z0-9]{4}-[a-z0-9]{4}$
-        example: vbim-akqf
-      description: Eight-character dataset identifier (four-four with a dash).
     AppTokenQuery:
       in: query
       name: $$app_token
@@ -141,6 +132,15 @@ components:
       schema:
         type: string
       description: Full SoQL query, overriding individual $select/$where/etc.
+    DatasetId:
+      in: path
+      name: dataset_id
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-z0-9]{4}-[a-z0-9]{4}$
+        example: vbim-akqf
+      description: Eight-character dataset identifier (four-four with a dash).
   responses:
     Error:
       description: Error response.

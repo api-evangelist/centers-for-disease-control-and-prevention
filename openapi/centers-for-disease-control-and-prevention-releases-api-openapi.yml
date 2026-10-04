@@ -39,24 +39,6 @@ components:
       - releases
       title: ReleasesResponse
       description: Response for releases as returned through the GitHub API.
-    ReleaseNotes:
-      properties:
-        id:
-          type: string
-          title: Id
-        header:
-          type: string
-          title: Header
-        content:
-          type: string
-          title: Content
-      type: object
-      required:
-      - id
-      - header
-      - content
-      title: ReleaseNotes
-      description: Content of a release note from GitHub.
     Release:
       properties:
         id:
@@ -90,3 +72,21 @@ components:
       - url
       title: Release
       description: Type for release information sent to the frontend.
+    ReleaseNotes:
+      properties:
+        id:
+          type: string
+          title: Id
+        header:
+          type: string
+          title: Header
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - id
+      - header
+      - content
+      title: ReleaseNotes
+      description: Content of a release note from GitHub.

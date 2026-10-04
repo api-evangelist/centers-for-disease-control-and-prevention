@@ -170,26 +170,6 @@ paths:
                 $ref: '#/components/schemas/TesConfigsToUpdateResponse'
 components:
   schemas:
-    TesUpdate:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        version:
-          type: string
-          title: Version
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - version
-      - created_at
-      title: TesUpdate
-      description: All metadata for a TES update needed for the frontend.
     ValidationError:
       properties:
         loc:
@@ -216,24 +196,27 @@ components:
       - msg
       - type
       title: ValidationError
-    TesConfigsToUpdateResponse:
+    TesResponse:
       properties:
-        existing_drafts:
+        tes_updates:
           items:
-            $ref: '#/components/schemas/TesConfigToUpdate'
+            $ref: '#/components/schemas/TesUpdate'
           type: array
-          title: Existing Drafts
-        drafts_to_create:
-          items:
-            $ref: '#/components/schemas/TesConfigToUpdate'
-          type: array
-          title: Drafts To Create
+          title: Tes Updates
       type: object
       required:
-      - existing_drafts
-      - drafts_to_create
-      title: TesConfigsToUpdateResponse
-      description: The response needed for rendering of the TES update configuration page.
+      - tes_updates
+      title: TesResponse
+      description: Response needed for the TES updates page.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     TesDiffConditionDetails:
       properties:
         canonical_url:
@@ -260,27 +243,44 @@ components:
       - is_new
       title: TesDiffConditionDetails
       description: A condition within a TES diff, with details for the diff page to display.
-    HTTPValidationError:
+    TesUpdate:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    TesResponse:
-      properties:
-        tes_updates:
-          items:
-            $ref: '#/components/schemas/TesUpdate'
-          type: array
-          title: Tes Updates
+        id:
+          type: string
+          format: uuid
+          title: Id
+        version:
+          type: string
+          title: Version
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
       type: object
       required:
-      - tes_updates
-      title: TesResponse
-      description: Response needed for the TES updates page.
+      - id
+      - version
+      - created_at
+      title: TesUpdate
+      description: All metadata for a TES update needed for the frontend.
+    TesConfigsToUpdateResponse:
+      properties:
+        existing_drafts:
+          items:
+            $ref: '#/components/schemas/TesConfigToUpdate'
+          type: array
+          title: Existing Drafts
+        drafts_to_create:
+          items:
+            $ref: '#/components/schemas/TesConfigToUpdate'
+          type: array
+          title: Drafts To Create
+      type: object
+      required:
+      - existing_drafts
+      - drafts_to_create
+      title: TesConfigsToUpdateResponse
+      description: The response needed for rendering of the TES update configuration page.
     TesConfigToUpdate:
       properties:
         configuration_id:

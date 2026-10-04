@@ -211,25 +211,6 @@ components:
       - msg
       - type
       title: ValidationError
-    EventFilterOption:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        canonical_url:
-          type: string
-          title: Canonical Url
-      type: object
-      required:
-      - id
-      - name
-      - canonical_url
-      title: EventFilterOption
-      description: Conditions returned to the user to be used for filtering events.
     AuditEvent:
       properties:
         id:
@@ -279,6 +260,29 @@ components:
       - has_custom_code_upload_events
       title: AuditEvent
       description: An event returned by the DB function.
+    CustomCodeUploadEventResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        system_display_name:
+          type: string
+          title: System Display Name
+        code:
+          type: string
+          title: Code
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - system_display_name
+      - code
+      - name
+      title: CustomCodeUploadEventResponse
+      description: Response model for a custom code upload event.
     HTTPValidationError:
       properties:
         detail:
@@ -310,26 +314,22 @@ components:
       - total_pages
       title: EventsResponse
       description: Response needed for the audit log page.
-    CustomCodeUploadEventResponse:
+    EventFilterOption:
       properties:
         id:
           type: string
           format: uuid
           title: Id
-        system_display_name:
-          type: string
-          title: System Display Name
-        code:
-          type: string
-          title: Code
         name:
           type: string
           title: Name
+        canonical_url:
+          type: string
+          title: Canonical Url
       type: object
       required:
       - id
-      - system_display_name
-      - code
       - name
-      title: CustomCodeUploadEventResponse
-      description: Response model for a custom code upload event.
+      - canonical_url
+      title: EventFilterOption
+      description: Conditions returned to the user to be used for filtering events.

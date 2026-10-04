@@ -118,39 +118,42 @@ paths:
           $ref: '#/components/responses/Error'
 components:
   parameters:
-    Offset:
+    Order:
       in: query
-      name: $offset
-      schema:
-        type: integer
-        default: 0
-      description: Row offset for pagination.
-    AppTokenQuery:
-      in: query
-      name: $$app_token
+      name: $order
       schema:
         type: string
-      description: Socrata application token (alternative to X-App-Token header).
+      description: Ordering (SoQL ORDER BY clause).
+    Select:
+      in: query
+      name: $select
+      schema:
+        type: string
+      description: Columns to return (SoQL SELECT clause).
+    Query:
+      in: query
+      name: $query
+      schema:
+        type: string
+      description: Full SoQL query, overriding individual $select/$where/etc.
     Having:
       in: query
       name: $having
       schema:
         type: string
       description: Post-grouping filter (SoQL HAVING clause).
+    AppTokenQuery:
+      in: query
+      name: $$app_token
+      schema:
+        type: string
+      description: Socrata application token (alternative to X-App-Token header).
     Where:
       in: query
       name: $where
       schema:
         type: string
       description: Row filter (SoQL WHERE clause).
-    Limit:
-      in: query
-      name: $limit
-      schema:
-        type: integer
-        default: 1000
-        maximum: 50000
-      description: Maximum rows to return.
     DatasetId:
       in: path
       name: dataset_id
@@ -160,36 +163,33 @@ components:
         pattern: ^[a-z0-9]{4}-[a-z0-9]{4}$
         example: vbim-akqf
       description: Eight-character dataset identifier (four-four with a dash).
-    Order:
-      in: query
-      name: $order
-      schema:
-        type: string
-      description: Ordering (SoQL ORDER BY clause).
-    Query:
-      in: query
-      name: $query
-      schema:
-        type: string
-      description: Full SoQL query, overriding individual $select/$where/etc.
     FullTextSearch:
       in: query
       name: $q
       schema:
         type: string
       description: Full-text search across the dataset.
-    Select:
+    Limit:
       in: query
-      name: $select
+      name: $limit
       schema:
-        type: string
-      description: Columns to return (SoQL SELECT clause).
+        type: integer
+        default: 1000
+        maximum: 50000
+      description: Maximum rows to return.
     Group:
       in: query
       name: $group
       schema:
         type: string
       description: Grouping (SoQL GROUP BY clause).
+    Offset:
+      in: query
+      name: $offset
+      schema:
+        type: integer
+        default: 0
+      description: Row offset for pagination.
   responses:
     Error:
       description: Error response.

@@ -139,6 +139,42 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    DiscoveredConfigurationSet:
+      properties:
+        name:
+          type: string
+          title: Name
+        condition_id:
+          type: string
+          format: uuid
+          title: Condition Id
+        versions:
+          items:
+            $ref: '#/components/schemas/DiscoveredConfigurationVersion'
+          type: array
+          title: Versions
+      type: object
+      required:
+      - name
+      - condition_id
+      - versions
+      title: DiscoveredConfigurationSet
+      description: Model to represent a set of discovered configurations.
+    FileInfoResponse:
+      properties:
+        max_for_diff_rendering_mb:
+          type: integer
+          const: 2
+          title: Max For Diff Rendering Mb
+          default: 2
+        max_for_uncompressed_mb:
+          type: integer
+          const: 15
+          title: Max For Uncompressed Mb
+          default: 15
+      type: object
+      title: FileInfoResponse
+      description: Utility class to help Orval ship these values to the frontend.
     DiscoveredConfigurationVersion:
       properties:
         id:
@@ -183,49 +219,34 @@ components:
       - msg
       - type
       title: ValidationError
-    FileInfoResponse:
+    Condition:
       properties:
-        max_for_diff_rendering_mb:
-          type: integer
-          const: 2
-          title: Max For Diff Rendering Mb
-          default: 2
-        max_for_uncompressed_mb:
-          type: integer
-          const: 15
-          title: Max For Uncompressed Mb
-          default: 15
-      type: object
-      title: FileInfoResponse
-      description: Utility class to help Orval ship these values to the frontend.
-    Body_discoverConfigurations:
-      properties:
-        uploaded_file:
-          anyOf:
-          - type: string
-            contentMediaType: application/octet-stream
-          - type: 'null'
-          title: Uploaded File
-      type: object
-      title: Body_discoverConfigurations
-    DiscoveredConfigurationsResponse:
-      properties:
-        sets:
+        code:
+          type: string
+          title: Code
+        display_name:
+          type: string
+          title: Display Name
+        refined_eicr:
+          type: string
+          title: Refined Eicr
+        stats:
           items:
-            $ref: '#/components/schemas/DiscoveredConfigurationSet'
+            type: string
           type: array
-          title: Sets
+          title: Stats
+        render_diff:
+          type: boolean
+          title: Render Diff
       type: object
       required:
-      - sets
-      title: DiscoveredConfigurationsResponse
-      description: Model to represent the sets of discovered configurations to return to the client.
-    DbConfigurationStatus:
-      type: string
-      enum:
-      - draft
-      - inactive
-      - active
+      - code
+      - display_name
+      - refined_eicr
+      - stats
+      - render_diff
+      title: Condition
+      description: Model for a Condition.
     SimulatorUploadResponse:
       properties:
         message:
@@ -257,55 +278,6 @@ components:
       - file_info_response
       title: SimulatorUploadResponse
       description: Model for the response when uploading a document in the simulate testing suite.
-    DiscoveredConfigurationSet:
-      properties:
-        name:
-          type: string
-          title: Name
-        condition_id:
-          type: string
-          format: uuid
-          title: Condition Id
-        versions:
-          items:
-            $ref: '#/components/schemas/DiscoveredConfigurationVersion'
-          type: array
-          title: Versions
-      type: object
-      required:
-      - name
-      - condition_id
-      - versions
-      title: DiscoveredConfigurationSet
-      description: Model to represent a set of discovered configurations.
-    Condition:
-      properties:
-        code:
-          type: string
-          title: Code
-        display_name:
-          type: string
-          title: Display Name
-        refined_eicr:
-          type: string
-          title: Refined Eicr
-        stats:
-          items:
-            type: string
-          type: array
-          title: Stats
-        render_diff:
-          type: boolean
-          title: Render Diff
-      type: object
-      required:
-      - code
-      - display_name
-      - refined_eicr
-      - stats
-      - render_diff
-      title: Condition
-      description: Model for a Condition.
     HTTPValidationError:
       properties:
         detail:
@@ -315,6 +287,22 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    Body_discoverConfigurations:
+      properties:
+        uploaded_file:
+          anyOf:
+          - type: string
+            contentMediaType: application/octet-stream
+          - type: 'null'
+          title: Uploaded File
+      type: object
+      title: Body_discoverConfigurations
+    DbConfigurationStatus:
+      type: string
+      enum:
+      - draft
+      - inactive
+      - active
     Body_uploadEcr:
       properties:
         body:
@@ -330,3 +318,15 @@ components:
       required:
       - body
       title: Body_uploadEcr
+    DiscoveredConfigurationsResponse:
+      properties:
+        sets:
+          items:
+            $ref: '#/components/schemas/DiscoveredConfigurationSet'
+          type: array
+          title: Sets
+      type: object
+      required:
+      - sets
+      title: DiscoveredConfigurationsResponse
+      description: Model to represent the sets of discovered configurations to return to the client.

@@ -80,6 +80,84 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CodedConcept:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+      type: object
+      required:
+      - code
+      - display
+      title: CodedConcept
+      description: Code / display name minimal representation of a codeable concept.
+    DbCode:
+      properties:
+        code:
+          type: string
+          title: Code
+        display:
+          type: string
+          title: Display
+        system_id:
+          type: string
+          format: uuid
+          title: System Id
+        system_name:
+          type: string
+          title: System Name
+      type: object
+      required:
+      - code
+      - display
+      - system_id
+      - system_name
+      title: DbCode
+      description: Model for all coded information stored in the codes table.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CodeCategoryStatus:
+      type: string
+      enum:
+      - not included
+      - partially complete
+      - fully complete
     GetConditionResponse:
       properties:
         id:
@@ -110,55 +188,48 @@ components:
       - systems
       title: GetConditionResponse
       description: Condition response model.
-    ValidationError:
+    GetConditionsResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DbCode:
-      properties:
-        code:
-          type: string
-          title: Code
-        display:
-          type: string
-          title: Display
-        system_id:
+        id:
           type: string
           format: uuid
-          title: System Id
-        system_name:
+          title: Id
+        display_name:
           type: string
-          title: System Name
+          title: Display Name
+        rsg_codes:
+          items:
+            $ref: '#/components/schemas/CodedConcept'
+          type: array
+          title: Rsg Codes
       type: object
       required:
-      - code
-      - display
-      - system_id
-      - system_name
-      title: DbCode
-      description: Model for all coded information stored in the codes table.
+      - id
+      - display_name
+      - rsg_codes
+      title: GetConditionsResponse
+      description: Conditions response model.
+    CodeSetStatus:
+      type: string
+      enum:
+      - not expanded
+      - partially complete
+      - fully complete
+    CompletenessStatus:
+      properties:
+        code_set_status:
+          $ref: '#/components/schemas/CodeSetStatus'
+        code_category_statuses:
+          items:
+            $ref: '#/components/schemas/CodeCategoryCompletenessStatus'
+          type: array
+          title: Code Category Statuses
+      type: object
+      required:
+      - code_set_status
+      - code_category_statuses
+      title: CompletenessStatus
+      description: Condition completeness status model.
     CodeSystemsReponse:
       properties:
         id:
@@ -199,74 +270,3 @@ components:
       - completeness
       title: CodeCategoryCompletenessStatus
       description: Code category completeness status model.
-    CompletenessStatus:
-      properties:
-        code_set_status:
-          $ref: '#/components/schemas/CodeSetStatus'
-        code_category_statuses:
-          items:
-            $ref: '#/components/schemas/CodeCategoryCompletenessStatus'
-          type: array
-          title: Code Category Statuses
-      type: object
-      required:
-      - code_set_status
-      - code_category_statuses
-      title: CompletenessStatus
-      description: Condition completeness status model.
-    GetConditionsResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        display_name:
-          type: string
-          title: Display Name
-        rsg_codes:
-          items:
-            $ref: '#/components/schemas/CodedConcept'
-          type: array
-          title: Rsg Codes
-      type: object
-      required:
-      - id
-      - display_name
-      - rsg_codes
-      title: GetConditionsResponse
-      description: Conditions response model.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CodeSetStatus:
-      type: string
-      enum:
-      - not expanded
-      - partially complete
-      - fully complete
-    CodeCategoryStatus:
-      type: string
-      enum:
-      - not included
-      - partially complete
-      - fully complete
-    CodedConcept:
-      properties:
-        code:
-          type: string
-          title: Code
-        display:
-          type: string
-          title: Display
-      type: object
-      required:
-      - code
-      - display
-      title: CodedConcept
-      description: Code / display name minimal representation of a codeable concept.
