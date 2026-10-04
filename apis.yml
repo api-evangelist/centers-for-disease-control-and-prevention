@@ -10,8 +10,8 @@ tags:
   - Open Data
   - Public Health
   - Socrata
-  - Surveillance
   - WONDER
+  - Disease Surveillance
 tags_raw:
   - Environmental Health
   - Epidemiology
@@ -20,9 +20,9 @@ tags_raw:
   - Open Data
   - Public Health
   - Socrata
-  - Surveillance
   - WONDER
   - Federal-Government
+  - Disease Surveillance
 type: Index
 deliveryModel:
   model: saas
@@ -565,3 +565,5 @@ x-enrichment:
   status: enriched
   artifacts_added: 24
   pass: local-v3
+x-tags-removed:
+- Surveillance
